@@ -11,29 +11,47 @@
 
 import com.sap.gateway.ip.core.customdev.util.Message
 import java.nio.charset.StandardCharsets
-import groovy.json.*
-import groovy.xml.*
-import java.util.*
+import groovy.json.JsonBuilder
+import groovy.json.JsonOutput
+import groovy.xml.MarkupBuilder
 
 def Message processData(Message payload) {
     def inboundPayload              = payload.getBody(String)
 
     def map                         = payload.getProperties()
-    def camelExceptionCaught        = map.get('CamelExceptionCaught')   as String ?: ''
-    def outputDataType              = map.get('outputDataType')         as String ?: ''
-    def logProperty                 = map.get('logProperty')            as String ?: ''
-    def logHeader                   = map.get('logHeader')              as String ?: ''
-    def logBody                     = map.get('logBody')                as String ?: ''
+    def camelExceptionCaught        = map.CamelExceptionCaught   as String ?: ''
+    def AhcOperationFailedException = camelExceptionCaught.getClass().getCanonicalName().equals("org.apache.camel.component.ahc.AhcOperationFailedException") ?: ''
+    
+    def outputDataType              = map.outputDataType                as String ?: ''
+    def logProperty                 = map.logProperty                   as String ?: ''
+    def logHeader                   = map.logHeader                     as String ?: ''
+    def logBody                     = map.logBody                       as String ?: ''
 
     def headers                     = payload.getHeaders()
-    def camelHttpResponseCode       = headers.get('CamelHttpResponseCode') as String ?: ''
-    def camelHttpResponseText       = headers.get('CamelHttpResponseText') as String ?: ''
+    def camelHttpResponseCode       = headers.CamelHttpResponseCode as String ?: ''
+    def camelHttpResponseText       = headers.CamelHttpResponseText as String ?: ''
 
     def ruleToAttachMessage         = 'yes'
     def hasErrorDetailsTag          = inboundPayload =~ '<errordetails>' ? true : false
 
     def messageLog                  = messageLogFactory.getMessageLog(payload)
     def                             exceptionMessages, logAttachment
+
+    if (camelExceptionCaught && AhcOperationFailedException) {
+        payload.setProperties([
+            'http.ResponseBody' :camelExceptionCaught.getResponseBody(),
+            'http.StatusCode'   :camelExceptionCaught.getStatusCode(),
+            'http.StatusText'   :camelExceptionCaught.getStatusText()
+
+        ])
+    } else {
+        payload.setProperties([
+            'http.ResponseBody' :'',
+            'http.StatusCode'   :'',
+            'http.StatusText'   :''
+
+        ])
+    }
 
     /*
         Verifica se possui a tag <errordetails> e, caso sim, itera
@@ -146,7 +164,6 @@ def Message processData(Message payload) {
         }
         payload.setBody(writer.toString())
     }
-
     return payload
     }
 
@@ -160,6 +177,6 @@ def unescapeUnicode(def inp) {
                                 Integer.parseInt(m[2], 16)
                             ] as byte[], StandardCharsets.UTF_16)
         inp = inp.replace(m[0], uniAsString)
-    }
+}
     return inp
 }
