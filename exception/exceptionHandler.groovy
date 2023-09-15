@@ -1,7 +1,7 @@
 /*  IMPORTANTE
     Declarar as propriedades abaixo em content-modifier no início do IFlow
 
-    outputDataType  se 'json', imprime payload de saída no formato JSON
+    exceptionOutputFormat  se 'json', imprime payload de saída no formato JSON
                     caso vazio ou 'xml', imprime no formato XML
 
     logProperty,    se 'yes', anexa log das propriedades no Monitor Message
@@ -22,7 +22,7 @@ def Message processData(Message payload) {
     def camelExceptionCaught        = map.CamelExceptionCaught   as String ?: ''
     def AhcOperationFailedException = camelExceptionCaught.getClass().getCanonicalName().equals("org.apache.camel.component.ahc.AhcOperationFailedException") ?: ''
     
-    def outputDataType              = map.outputDataType                as String ?: ''
+    def exceptionOutputFormat       = map.exceptionOutputFormat                as String ?: ''
     def logProperty                 = map.logProperty                   as String ?: ''
     def logHeader                   = map.logHeader                     as String ?: ''
     def logBody                     = map.logBody                       as String ?: ''
@@ -126,11 +126,11 @@ def Message processData(Message payload) {
     }
 
     /*
-        Caso a propriedade 'outputDataType' seja 'json', então será impresso um payload de outbound no formato JSON
+        Caso a propriedade 'exceptionOutputFormat' seja 'json', então será impresso um payload de outbound no formato JSON
         caso seja vazio ou 'xml', então a saída será em formato XML.
     */
 
-    if (outputDataType.equalsIgnoreCase('json')) {
+    if (exceptionOutputFormat.equalsIgnoreCase('json')) {
         def builder     = new JsonBuilder()
         builder.exceptionMessages {
             if ( hasErrorDetailsTag ) {

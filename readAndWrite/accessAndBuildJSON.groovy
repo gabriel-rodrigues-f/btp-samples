@@ -1,4 +1,5 @@
 import com.sap.gateway.ip.core.customdev.util.Message
+import java.nio.charset.StandardCharsets
 import groovy.json.JsonSlurper
 import groovy.json.JsonBuilder
 
