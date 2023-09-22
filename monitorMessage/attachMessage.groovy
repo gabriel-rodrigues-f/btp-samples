@@ -12,7 +12,6 @@ def Message processData(Message payload) {
     def logAttachment
     if (messageLogFactory) {
         messageLogFactory.setStringProperty('LogType', 'Payload')
-
         if (logProperty.equalsIgnoreCase(ruleToAttachMessage)) {
             StringBuffer propertiesBuffer = new StringBuffer()
             map.eachWithIndex { property, index ->
