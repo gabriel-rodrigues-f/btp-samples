@@ -1,4 +1,5 @@
 import com.sap.gateway.ip.core.customdev.util.Message
+import java.nio.charset.StandardCharsets
 
 def unescapeUnicode(def inp) {
     (inp =~ /\\u([0-9a-f]{2})([0-9a-f]{2})/).each { m ->
