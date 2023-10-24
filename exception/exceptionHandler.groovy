@@ -1,23 +1,25 @@
 import com.sap.gateway.ip.core.customdev.util.Message
 
-def Message processData(Message payload) {
-    def inboundPayload              = payload.getBody(String)
-    def map                         = payload.getProperties()
-    def camelExceptionCaught        = map.CamelExceptionCaught as String ?: ''
-    def AhcOperationFailedException = camelExceptionCaught.getClass().getCanonicalName().equals("org.apache.camel.component.ahc.AhcOperationFailedException") ?: ''
-    def hasErrorDetailsTag          = inboundPayload =~ '<errordetails>' ? true : false
-    def exceptionMessages           = []
+def Message processData(Message message) {
+    def inboundPayload          = message.getBody(String)
+    def properties              = message.getProperties()
+    def camelExceptionCaught    = properties.CamelExceptionCaught as String ?: ''
+    def hasErrorDetailsTag      = inboundPayload =~ '<errordetails>' ? true : false
+    def exceptionMessages       = []
 
     if (hasErrorDetailsTag) {
-        def xmlErrorPath = new XmlSlurper().parseText(inboundPayload)
-        def xErrorDetailsNode = xmlErrorPath.'**'.find { xmlTag -> xmlTag.name() == 'errordetails' }
+        def xmlErrorPath        = new XmlSlurper().parseText(inboundPayload)
+        def xErrorDetailsNode   = xmlErrorPath.'**'.find { xmlTag -> xmlTag.name() == 'errordetails' }
 
         xErrorDetailsNode.'**'.findAll { xmlTag -> xmlTag.name() == 'message' }.each { messageTag ->
             exceptionMessages << messageTag.text()
-        }
+       }
     }
 
-    exceptionMessages   = exceptionMessages ?:  [camelExceptionCaught]
-    payload.setProperty('response', exceptionMessages.join('\n') ?: inboundPayload)
-    return payload
+    exceptionMessages = exceptionMessages.isEmpty() ? camelExceptionCaught : exceptionMessages.join('\n')
+    message.setProperties([
+        exceptionResponse   :exceptionMessages,
+        logDescription      :'Error'
+    ])
+    return message
 }
