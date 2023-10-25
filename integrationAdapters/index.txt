@@ -1,0 +1,5 @@
+Os integration adapters são "adapters" para cenários para complexos.
+Com eles podemos receber dados de fontes que utilizam protocolos diferentes e normalizar seu formato. 
+
+Os Integration Adapters podem transformar o formato do dado recebido (XML para JSON e JSON para XML, por exemplo)
+
