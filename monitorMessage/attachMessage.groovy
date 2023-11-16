@@ -1,9 +1,3 @@
-/**
-* Name: Loga dados no Monitor Message
-* Creator: Externo - Gabriel Rodrigues
-* Date: 17/10/2023
-**/
-
 import com.sap.gateway.ip.core.customdev.util.Message
 
 def Message processData(Message payload) {
