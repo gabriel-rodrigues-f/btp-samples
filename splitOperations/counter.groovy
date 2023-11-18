@@ -1,13 +1,15 @@
 import com.sap.gateway.ip.core.customdev.util.Message
 
 def Message processData(Message message) {
-    def messageLog = messageLogFactory.getMessageLog(message)
+    def messageLog          = messageLogFactory.getMessageLog(message)
     if(messageLog){
-        def loopCounter = message.getProperty("CamelSplitSize") as String
-        if (loopCounter) {
+        def splitCounterName    = message.getProperty("pSplitCounterName")  ?: "Split Counter"
+        def camelSplitComplete  = message.getProperty("CamelSplitComplete") ?: ""
+        def loopCounter         = message.getProperty("CamelSplitSize") as String
+        if (loopCounter && camelSplitComplete) {
             messageLogFactory
                 .getMessageLog(message)
-                .addCustomHeaderProperty("loopCounter", loopCounter)
+                .addCustomHeaderProperty(splitCounterName, loopCounter)
         }
     }
     return message
