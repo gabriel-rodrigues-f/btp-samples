@@ -1,21 +1,26 @@
 import com.sap.gateway.ip.core.customdev.util.Message
+import java.math.BigDecimal
 
 def Message processData(Message message) {
-    def messageLog          = messageLogFactory.getMessageLog(message)
-    def camelSplitComplete  = message.getProperty("CamelSplitComplete") ?: ""
-    def camelSplitSize      = message.getProperty("CamelSplitSize") ?: ""
+    def messageLog              = messageLogFactory.getMessageLog(message)
+    def properties              = message.getProperties()
+    def camelSplitComplete      = properties.CamelSplitComplete                 ?: ""
+    def camelSplitSize          = properties.CamelSplitSize                     ?: ""
+    def pIdentificadorPayload   = properties.p_identificadorPayload as String   ?: "Integration Flow"
 
-    if(messageLog){
-        def messageSize = message.getBody(String).getBytes().length as String
-        if (messageSize && camelSplitComplete) {
+    if (messageLog && message.getBody(String)) {
+        def messageBytes        = message.getBody(String).getBytes().length
+        def messageKiloBytes    = messageBytes / 1024.0
 
-            messageLogFactory
-                .getMessageLog(message)
-                .addCustomHeaderProperty("payloadSize", messageSize)
+        if (messageBytes && camelSplitComplete.toString().equalsIgnoreCase("true")) {
+            def roundedKiloBytes        = new BigDecimal(messageKiloBytes).setScale(2, BigDecimal.ROUND_HALF_UP)
+            def updatedCamelSplitSize   = (messageKiloBytes * camelSplitSize.toInteger()).setScale(2, BigDecimal.ROUND_HALF_UP)
 
-            messageLogFactory
-                .getMessageLog(message)
-                .addCustomHeaderProperty("split iterations", camelSplitSize)
+            messageLog.with {
+                addCustomHeaderProperty("${pIdentificadorPayload} - Total KiloBytes", "${roundedKiloBytes}")
+                addCustomHeaderProperty("${pIdentificadorPayload} - Iterations", "${camelSplitSize}")
+                addCustomHeaderProperty("${pIdentificadorPayload} - KiloBytes x Iterations", "${updatedCamelSplitSize}")
+            }
         }
     }
     return message
