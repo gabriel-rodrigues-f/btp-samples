@@ -1,9 +1,10 @@
 import com.sap.gateway.ip.core.customdev.util.Message
 
 def Message processData(Message message) {
-    Integer skip    = message.getProperty('pSkip')  as Integer
-    Integer top     = message.getProperty('pTop')   as Integer
-    def first       = message.getProperty('pFirst')
+    def properties  = message.getProperties()
+    Integer skip    = properties.pSkip  as Integer
+    Integer top     = properties.pTop   as Integer
+    def first       = properties.pFirst
     String newSkip  = ''
 
     def now         = Calendar.instance
