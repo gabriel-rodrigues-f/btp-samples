@@ -25,7 +25,6 @@ def Message processData(Message payload) {
     def inboundPayload          = payload.getBody(String)
     def properties              = payload.getProperties()
     def camelExceptionCaught    = properties.CamelExceptionCaught as String ?: ''
-    def AhcOperationFailedException = camelExceptionCaught.getClass().getCanonicalName().equals('org.apache.camel.component.ahc.AhcOperationFailedException') ?: ''
 
     def exceptionOutputFormat   = properties.exceptionOutputFormat as String ?: ''
     def logProperty             = properties.logProperty   as String ?: ''
@@ -43,7 +42,6 @@ def Message processData(Message payload) {
     def exceptionMessages, logAttachment
 
     if (hasErrorDetailsTag) {
-        def messages = []
         def xmlErrorPath        = new XmlSlurper().parseText(inboundPayload)
         def xErrorDetailsNode   = xmlErrorPath.'**'.find { xmlTag -> xmlTag.name() == 'errordetails' }
 
