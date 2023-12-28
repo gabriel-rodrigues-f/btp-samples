@@ -9,7 +9,6 @@ def Message processData(Message message) {
     def jsonRoot        = new JsonSlurper().parseText(inboundPayload)
     def properties      = message.getProperties()
     def headers         = message.getHeaders()
-    def timestamp       = properties.CamelCreatedTimestamp          as String ?: ''
     def camelExceptionCaught    = properties.CamelExceptionCaught   as String ?: ''
     def camelHttpResponseCode   = headers.CamelHttpResponseCode     as String ?: 500
     def camelHttpResponseText   = headers.CamelHttpResponseText     as String ?: 'Error'

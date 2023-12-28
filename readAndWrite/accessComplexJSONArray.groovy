@@ -2,16 +2,15 @@ import com.sap.gateway.ip.core.customdev.util.Message
 import groovy.json.JsonSlurper
 import groovy.json.JsonBuilder
 import groovy.json.JsonOutput
-import java.util.LinkedHashMap
 
-def Message processData(Message message){
+def Message processData(Message message) {
     InputStream reader = message.getBody(InputStream)
-    def jsonPath       = new JsonSlurper().parse(reader)   
+    def jsonPath       = new JsonSlurper().parse(reader)
     def builder        = new JsonBuilder()
     def jsonMetaMes    = jsonPath.METAMES
     def jsonPosicao    = jsonPath.POSICAO
     def jsonRecebiveis = jsonPosicao.RECEBIVEIS
- 
+
     builder {
             sucesso       jsonPath.sucesso
             startAt       jsonPath.STARTAT
@@ -65,8 +64,8 @@ def Message processData(Message message){
                     }
                 }
             }
-        }
-        
+    }
+
     def jsonString  = builder.toString()
     jsonString      = unescapeUnicode(JsonOutput.prettyPrint(jsonString))
     message.setBody(jsonString)

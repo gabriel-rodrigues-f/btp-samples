@@ -1,24 +1,30 @@
 import com.sap.gateway.ip.core.customdev.util.Message
-import groovy.xml.MarkupBuilder
+import groovy.json.JsonSlurper
+
+/*
+{
+    "ProfitCenterCode": "123",
+    "ProfitCenterName": "Example Profit Center",
+    "IsActive": "true"
+}
+ */
 
 Message processData(Message message) {
-    InputStream reader  = message.getBody(InputStream)
-    def xmlPath     = new XmlSlurper().parse(reader)
-    def writer      = new StringWriter()
-    def builder     = new MarkupBuilder(writer)
-    def docNum      = xmlPath.Fatura_Ordens.Docnum.text()
+    def body    = message.getBody(String)
+    def root    = new JsonSlurper().parseText(body)
+    def profitCenterCode        = root.ProfitCenterCode     as String ?: ''
+    def profitCenterName        = root.ProfitCenterName     as String ?: ''
+    def isActive                = root.IsActive             as String ?: ''
 
-	messageLog = messageLogFactory.getMessageLog(message)
-	if(messageLog){
-        idTransaction   = message.getProperty("pIdTransaction")
-		if(idTransaction){
-            messageLog.addCustomHeaderProperty("idTransaction"  ,idTransaction)
+    messageLog = messageLogFactory.getMessageLog(message)
+    if (messageLog) {
+        if (profitCenterCode) {
+            messageLog.with {
+                addCustomHeaderProperty('Profit Center Code', profitCenterCode)
+                addCustomHeaderProperty('Profit Center Name', profitCenterName)
+                addCustomHeaderProperty('Is active', isActive)
+            }
         }
-	}
-    message.setProperty("pDocnum"   ,docNum)
-    message.setHeaders([
-        "SAP_ApplicationID" :docNum,
-        "SAP_MessageType"   :"Billing Document Number"
-        ])
-	return message
+    }
+    return message
 }
