@@ -1,26 +1,27 @@
-def Message setPagingQuery(Message message){
-    def pSkip       = message.getProperty("pSkip")
-    def pTop        = message.getProperty("pTop")
-    def pFirst      = message.getProperty("pFirst")
-    String newSkip  = ""
-    
-    // Monta Paginação
-    if (pFirst == "FALSE"){
-        def result  = pSkip.toInteger() + pTop.toInteger()
-        newSkip     = result
-        message.setProperty("pSkip", newSkip)
-    }
-    else if (pFirst == "TRUE"){
-        pFirst = "FALSE"
+import com.sap.gateway.ip.core.customdev.util.Message
+
+def Message processData(Message message) {
+    Integer skip    = message.getProperty('pSkip')  as Integer
+    Integer top     = message.getProperty('pTop')   as Integer
+    def first       = message.getProperty('pFirst')
+    String newSkip  = ''
+
+    def now         = Calendar.instance
+    def yearQuery   = now[java.util.Calendar.YEAR]
+    def monthQuery  = String.format('%02d', now[java.util.Calendar.MONTH] + 1)
+
+    if (first == 'false') {
+        Integer result  = skip + top
+        newSkip         = result.toString()
+        message.setProperty('pSkip', newSkip)
+    } else if (first) {
+        first = 'false'
     }
 
-	
-	// Query Filters
-	def now         = Calendar.instance
-	def yearQuery   = now[java.util.Calendar.YEAR]
-	def monthQuery  = String.format("%2d"   ,now[java.util.Calendar.MONTH] + 1).replace(" ", "0")		
-	message.setProperty("pMonthQuery"       ,monthQuery.toString())
-	message.setProperty("pYearQuery"        ,yearQuery.toString())
-	message.setProperty("pFirst"            ,pFirst)
-	return message
+    message.with {
+        setProperty('pMonthQuery'   ,monthQuery)
+        setProperty('pYearQuery'    ,yearQuery.toString())
+        setProperty('pFirst'        ,first)
+    }
+    return message
 }
