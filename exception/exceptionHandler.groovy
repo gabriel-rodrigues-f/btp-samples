@@ -18,7 +18,7 @@ def Message processData(Message message) {
 
     exceptionMessages = exceptionMessages.isEmpty() ? camelExceptionCaught : exceptionMessages.join('\n')
     message.setProperties([
-        pRetorno: exceptionMessages,
+        response: exceptionMessages,
         logDescription: 'Error'
     ])
     return message
