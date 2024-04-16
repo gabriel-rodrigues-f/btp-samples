@@ -1,19 +1,18 @@
 import com.sap.gateway.ip.core.customdev.util.Message
 
-def Message processData(Message payload) {
-    def body            = payload.getBody(String)
-    def properties      = payload.getProperties()
-    def headers         = payload.getHeaders()
-    def logProperty     = properties.logProperty       as String ?: ''
-    def logHeader       = properties.logHeader         as String ?: ''
-    def logBody         = properties.logBody           as String ?: ''
-    def logDescription  = properties.logDescription    as String ?: ''
-    def ruleToAttachMessage = 'yes'
-    def messageLogFactory   = messageLogFactory.getMessageLog(payload)
+def Message processData(Message request) {
+    InputStream body  = request.getBody(InputStream)
+    Map<String, String> properties  = request.getProperties()
+    Map<String, String> headers     = request.getHeaders()
+    String logProperty  = properties.logProperty       as String ?: ''
+    String logHeader    = properties.logHeader         as String ?: ''
+    String logBody      = properties.logBody           as String ?: ''
+    String ruleToAttachMessage = 'true'
+    def messageLogFactory   = messageLogFactory.getMessageLog(request)
     def logAttachment
 
     if (messageLogFactory) {
-        messageLogFactory.setStringProperty('LogType', 'Payload')
+        messageLogFactory.setStringProperty('LogType', 'payload')
         if (logProperty.equalsIgnoreCase(ruleToAttachMessage)) {
             StringBuffer propertiesBuffer = new StringBuffer()
             properties.eachWithIndex { property, index ->
@@ -39,8 +38,8 @@ def Message processData(Message payload) {
         }
 
         if (logAttachment) {
-            messageLogFactory.addAttachmentAsString(logDescription, logAttachment, 'text/plain')
+            messageLogFactory.addAttachmentAsString("Log", logAttachment, 'text/plain')
         }
     }
-    return payload
+    return request
 }
