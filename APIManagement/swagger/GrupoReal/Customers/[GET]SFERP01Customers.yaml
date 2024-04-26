@@ -1,0 +1,236 @@
+openapi: 3.0.1
+info:
+  title: SF ERP01 Customers
+  version: v1
+  description: <p></p>
+servers:
+  - url: >-
+      https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp01-customers
+tags:
+  - name: Customers
+    description: Search for Customers
+paths:
+  "/{idcadastro}":
+    get:
+      tags:
+        - Customers
+      summary: Customer Conditions
+      description: Search for Customer Condition through Cloud Integration.
+      operationId: getSingleCustomer
+      parameters:
+        - name: idcadastro
+          in: path
+          required: true
+          description: ID of the client to retrieve.
+          schema:
+            type: string
+        - name: idloja
+          in: query
+          required: true
+          description: ID of the store associated with the client.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchCustomer"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "429":
+          description: To Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToManyRequests"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+components:
+  schemas:
+    SearchCustomer:
+      type: object
+      properties:
+        idCadastro:
+          type: string
+          example: 49932903000108
+        nome:
+          type: string
+          example: RAFA AUTO PECAS
+        razaoSocial:
+          type: string
+          example: RAFA COMERCIO DE PECAS LTDA
+        tipoPessoa:
+          type: string
+          example: JURÍDICA
+        cpfCnpj:
+          type: string
+          example: 49932903000108
+        inscricaoEstadual:
+          type: string
+          example: 0963950991
+        dataCadastro:
+          type: string
+          example: "2023-05-10T14:00:32.000Z"
+        dataRecadastro:
+          type: string
+          example: "2023-12-14T02:15:46.000Z"
+        caracteristicaNegocio:
+          type: string
+          example: LINHA LEVE E MEDIA
+        tipoAtividade:
+          type: string
+          example: LOJA DE AUTO PECAS
+        cep:
+          type: string
+          example: 91060591
+        uf:
+          type: string
+          example: RS
+        logradouro:
+          type: string
+          example: "SERTORIO 6315, SAO SEBASTIAO. PORTO ALEGRE-RS"
+        complemento:
+          type: string
+          example: LOJA  11
+        cidade:
+          type: string
+          example: PORTO ALEGRE
+        bairro:
+          type: string
+          example: SAO SEBASTIAO
+        pais:
+          type: string
+          example: BRASIL
+        telefone:
+          type: string
+          example: (005) 8114-1074
+        saldo:
+          type: string
+          example: 13383.25
+        tokenChatBot:
+          type: string
+          example: 46546807
+        codigoPrazoPadrao:
+          type: string
+          example: 4
+        prazoPadrao:
+          type: string
+          example: PRAZO DA PRACA
+        obrigaPrazoDefault:
+          type: string
+          example: NÃO
+        tipoPrazoMaisUsado:
+          type: string
+          example: 4
+        seqPrazoClienteMaisusado:
+          type: string
+          example: 2511
+        mediaDiasMaisUsada:
+          type: string
+          example: -1
+        diasParcelasMaisUsada:
+          type: string
+          example: Prazo Praça
+        infoCdCliente:
+          type: array
+          items:
+            type: object
+            properties:
+              codigoGrupoCd:
+                type: string
+                example: 1
+              grupoCd:
+                type: string
+                example: GRUPO REAL MOTO PECAS
+              codigoUnidadeCd:
+                type: string
+                example: 7
+              unidadeCd:
+                type: string
+                example: RMP-POA
+        listaCdCliente:
+          type: array
+          items:
+            type: object
+            properties:
+              codigoGrupoCdLista:
+                type: string
+                example: 1
+              listaCdHabilitado:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    codigoUnidadeCdLista:
+                      type: string
+                      example: 1
+                    unidadeCdLista:
+                      type: string
+                      example: RMP-MTZ
+                    localizacaoCdLista:
+                      type: string
+                      example: UBERLANDIA/MG
+                    tipoFreteMaisUsado:
+                      type: string
+                      example: 1
+                    idTransporteMaisUsado:
+                      type: string
+                      example: TRA0105828
+                    transporteMaisUsado:
+                      type: string
+                      example: (TRANSP) BRASPRESS
+    Unauthorized:
+      type: object
+      properties:
+        fault:
+          type: object
+          properties:
+            faultstring:
+              type: string
+              example: Access Token expired
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.access_token_expired
+    ToManyRequests:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Your Quota Exceeded
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 429
+            text:
+              type: string
+              example: To Many Requests
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Error - Contact the administrator
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 500
+            text:
+              type: string
+              example: Internal Server Error

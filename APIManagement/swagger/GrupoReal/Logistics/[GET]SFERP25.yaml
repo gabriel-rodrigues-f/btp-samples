@@ -1,0 +1,158 @@
+openapi: 3.0.1
+info:
+  title: SF ERP25 Logistics
+  version: v1
+  description: <p></p>
+  x-targetEndpoint: >-
+    https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp25-logistics
+servers:
+  - url: >-
+      https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp25-logistics
+tags:
+  - name: Logistics
+    description: Search for Shipping Company
+paths:
+  "/{idUnidade}/{idCadastro}/{prazo}":
+    get:
+      tags:
+        - Logistics
+      summary: Search for Shipping Company
+      operationId: searchForShippingCompany
+      parameters:
+        - name: idUnidade
+          in: path
+          required: true
+          description: ID of the unit to retrieve.
+          schema:
+            type: string
+        - name: idCadastro
+          in: path
+          required: true
+          description: ID of the client to retrieve.
+          schema:
+            type: string
+        - name: prazo
+          in: path
+          required: true
+          description: ID of the delivery time to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchForShippingCompany"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "429":
+          description: To Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToManyRequests"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+components:
+  schemas:
+    SearchForShippingCompany:
+      type: object
+      properties:
+        codigoFilial:
+          type: number
+          example: 1
+        nomeFilial:
+          type: string
+          example: REAL MOTO PECAS LTDA
+        transportadorasCliente:
+          type: array
+          items:
+            type: object
+            properties:
+              tipoFreteTransportadora:
+                type: string
+                example: 1 - CIP
+              idCadastroTransportadora:
+                type: string
+                example: TRA0105828
+              nomeTransportadora:
+                type: string
+                example: BRASPRESS
+              configuradaTransportadora:
+                type: string
+                example: SIM
+              configuradaMotoboy:
+                type: string
+                example: NÃO
+              configuradaNossoCarro:
+                type: string
+                example: NÃO
+              tipoFretetipoFrete:
+                type: string
+                example: 1
+              fretePagoAcima:
+                type: string
+                example: 5300
+              freteMinimoFinal:
+                type: string
+                example: 100.7
+              percentualEncargo:
+                type: string
+                example: 0
+              observacoes:
+                type: string
+                example: LOGISTICA CADASTRADA EXCLUSIVA PARA TRANSFERENCIA ENTRE FILIAIS
+    Unauthorized:
+          type: object
+          properties:
+            fault:
+              type: object
+              properties:
+                faultstring:
+                  type: string
+                  example: Access Token expired
+                detail:
+                  type: object
+                  properties:
+                    errorcode:
+                      type: string
+                      example: keymanagement.service.access_token_expired
+    ToManyRequests:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Your Quota Exceeded
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 429
+            text:
+              type: string
+              example: To Many Requests
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Error - Contact the administrator
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 500
+            text:
+              type: string
+              example: Internal Server Error

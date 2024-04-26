@@ -1,0 +1,251 @@
+openapi: 3.0.1
+info:
+  title: SF ERP23 Customers
+  version: v1
+  description: <p></p>
+  x-targetEndpoint: >-
+    https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp23-customers
+servers:
+  - url: >-
+      https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp23-customers
+tags:
+  - name: Customers
+    description: Create Pre Registration
+paths:
+  /:
+    post:
+      tags:
+        - Customers
+      operationId: createPreRegistration
+      requestBody:
+        description: Create Pre Registration
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePreRegistration"
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatePreRegistrationResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "429":
+          description: To Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToManyRequests"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+components:
+  schemas:
+    CreatePreRegistration:
+      type: object
+      properties:
+        json:
+          type: object
+          properties:
+            idCrm:
+              type: string
+              example: 31590628000118
+            dataEntrada:
+              type: string
+              example: "03/04/2019  22:33:51"
+            idCadastroResponsavel:
+              type: string
+              example: FUN0097688
+            tipoPessoa:
+              type: string
+              example: J
+            cpfCnpjCadastro:
+              type: string
+              example: 85442532000131
+            razaoSocialCliente:
+              type: string
+              example: 888888 AUTO PARTS
+            telefoneCadastro:
+              type: string
+              example: 034-32396669
+            faxCadastro:
+              type: string
+              example: 034-32396669
+            emailRecebimentoNfe:
+              type: string
+              example: NFE@MAXIJ.COM.BR
+            tipoEmissaoNf:
+              type: string
+              example: E
+            contatoCadastro:
+              type: string
+              example: JOAO
+            emailContato:
+              type: string
+              example: JJ@MAXIJ.COM.BR
+            whatsappCliente:
+              type: string
+              example: 034-991680101
+            ufCliente:
+              type: string
+              example: MG
+            cidadeCliente:
+              type: string
+              example: UBERLANDIA
+            codigoEstruturaCliente:
+              type: string
+              example: 1
+            outrasCaracteristicas:
+              type: string
+              example: RETIFICA
+            tipoAtividade:
+              type: string
+              example: 1
+            outrosTipos:
+              type: string
+              example: ELETRICA
+            observacoes:
+              type: string
+              example: CLIENTE BOM POTENCIAL LINHA MOTOR
+            predioProprio:
+              type: string
+              example: "N"
+            tipoPrazoCadastro:
+              type: string
+              example: P
+            previsaoPedido:
+              type: string
+              example: "N"
+            referenciasComerciais:
+              type: array
+              items:
+                type: object
+                properties:
+                  empresaReferenciaComercial:
+                    type: string
+                    example: VESPERMIX
+                  telefoneReferenciaComercial:
+                    type: string
+                    example: 034-32390101
+                  comentarioReferenciaComercial:
+                    type: string
+                    example: "BOM CLIENTE, PAGAMENTOS EM DIA"
+            referenciasBancarias:
+              type: array
+              items:
+                type: object
+                properties:
+                  referenciaBancaria:
+                    type: string
+                    example: BANCO DO BRASIL
+    CreatePreRegistrationResponse:
+      type: object
+      properties:
+        Success:
+          type: boolean
+          example: true
+        Application:
+          type: string
+          example: PostmanRuntime/7.37.0
+        Pipeline:
+          type: object
+          properties:
+            name:
+              type: string
+              example: clientes-api
+            versionMajor:
+              type: string
+              example: 1
+            versionMinor:
+              type: string
+              example: 69
+            project:
+              type: string
+              example: default
+            realm:
+              type: string
+              example: greal
+            description:
+              type: string
+              example: clientes-api
+            id:
+              type: string
+              example: c5ad0aa8-5c02-4005-8ac1-87d1f22f33f0
+        Procedure:
+          type: boolean
+          example: true
+        RequestName:
+          type: boolean
+          example: true
+        Payload:
+          type: object
+          properties:
+            queryAndPath:
+              type: object
+              properties:
+                idcadastro:
+                  type: string
+                  example: pre-cadastro
+            body:
+              $ref: "#/components/schemas/CreatePreRegistration"
+        Response:
+          type: string
+          example: ""
+        DataBaseError:
+          type: string
+          example: "Registro criado.-{}"
+    Unauthorized:
+      type: object
+      properties:
+        fault:
+          type: object
+          properties:
+            faultstring:
+              type: string
+              example: Access Token expired
+            detail:
+              type: object
+              properties:
+                errorcode:
+                  type: string
+                  example: keymanagement.service.access_token_expired
+    ToManyRequests:
+      type: object
+      properties:
+        message:
+          type: string
+          example: To Many Requests
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 429
+            text:
+              type: string
+              example: Your Quota Exceeded
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Error - Contact the administrator
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 500
+            text:
+              type: string
+              example: Internal Server Error

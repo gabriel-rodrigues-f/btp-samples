@@ -1,0 +1,23 @@
+"429":
+  description: To Many Requests
+  content:
+    application/json:
+      schema:
+        $ref: "#/components/schemas/ToManyRequests"
+
+schemas:
+  ToManyRequests:
+    type: object
+    properties:
+      message:
+        type: string
+        example: To Many Requests
+      status:
+        type: object
+        properties:
+          code:
+            type: number
+            example: 429
+          text:
+            type: string
+            example: Your Quota Exceeded

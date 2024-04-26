@@ -1,0 +1,269 @@
+openapi: 3.0.1
+info:
+  title: SF ERP27 Sales
+  version: v1
+  description: <p></p>
+  x-targetEndpoint: >-
+    https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp27-sales
+servers:
+  - url: >-
+      https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp27-sales
+tags:
+  - name: Quotation
+paths:
+  "/{codPedido}/{codEmpresa}":
+    post:
+      tags:
+        - Quotation
+      summary: Send Quotation
+      operationId: sendCotacao
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Quotation"
+        required: true
+      parameters:
+        - name: codPedido
+          in: path
+          required: true
+          description: ID of the client to retrieve.
+          schema:
+            type: string
+        - name: codEmpresa
+          in: path
+          required: true
+          description: ID of the client to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuotationResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "429":
+          description: To Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToManyRequests"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+components:
+  schemas:
+    Quotation:
+      type: object
+      properties:
+        idCadastroCliente:
+          type: string
+          example: 49932903000108
+        codigoEmpresaPedido:
+          type: string
+          example: 1
+        idCarrinho:
+          type: string
+          example: MAGx123
+        tipoPrazo:
+          type: string
+          example: 4
+        encargoDescontoPrazo:
+          type: string
+          example: 0
+        tipoFrete:
+          type: string
+          example: 1
+        tipoAcao:
+          type: string
+          example: C
+        tipoPedido:
+          type: string
+          example: 8
+        tipoEntidade:
+          type: string
+          example: 1
+        nomeCupom:
+          type: string
+          example: ""
+        tipoCupom:
+          type: string
+          example: ""
+        valorCupom:
+          type: string
+          example: 0
+        limpaCarrinho:
+          type: string
+          example: TRA0105363
+        idCadastroTransportadora:
+          type: string
+          example: TRA0105363
+        seqPrazoCliente:
+          type: string
+          example: 474351
+        itens:
+          type: array
+          items:
+            type: object
+            properties:
+              qtdePedida:
+                type: string
+                example: 10
+              sku:
+                type: string
+                example: 00152094000368
+        codigoGrupoEmpresa:
+          type: string
+          example: 1
+    QuotationResponse:
+      type: object
+      properties:
+        idCarrinho:
+          type: string
+          example: BL22190326
+        idCadastroCliente:
+          type: string
+          example: 49932903000108
+        codigoEmpresaPedido:
+          type: string
+          example: 1
+        codigoGrupoEmpresa:
+          type: string
+          example: 1
+        tipoPrazo:
+          type: string
+          example: 4
+        seqPrazoCliente:
+          type: string
+          example: 474351
+        tipoFrete:
+          type: string
+          example: 1
+        idCadastroTransportadora:
+          type: string
+          example: TRA0105363
+        tipoPedido:
+          type: string
+          example: 8
+        tipoEntidade:
+          type: string
+          example: 1
+        encargoDescontoPrazo:
+          type: string
+          example: 0
+        limpaCarrinho:
+          type: string
+          example: "N"
+        dataPedido:
+          type: string
+          example: "2024-04-17T10:16:23.000Z"
+        dataValidade:
+          type: string
+          example: "2024-04-19T00:00:00.000Z"
+        nroCotacao:
+          type: string
+          example: 216923
+        statusCotacao:
+          type: string
+          example: P
+        totalPedido:
+          type: string
+          example: 240
+        totalEstoque:
+          type: string
+          example: 240
+        diasPagamento:
+          type: array
+          items:
+            type: object
+            properties:
+              diaPagamento:
+                type: string
+                example: 30
+        autorizacao:
+          type: boolean
+          example: true
+        itensPedido:
+          type: array
+          items:
+            type: object
+            properties:
+              sku:
+                type: string
+                example: 00152094000368
+              valorPrecoFlexibilizado:
+                type: string
+                example: 24
+              valorPrecoFlexibilizadoTributado:
+                type: string
+                example: 28.55
+              qtdeEstoque:
+                type: string
+                example: 11
+              qtdePedida:
+                type: string
+                example: 10
+              disponivelVenda:
+                type: string
+                example: S
+              quantidadeMinima:
+                type: string
+                example: 1
+        pipelinekey:
+          type: string
+          example: 74b5281f-4755-464f-a265-2295b9315f9e
+    Unauthorized:
+              type: object
+              properties:
+                fault:
+                  type: object
+                  properties:
+                    faultstring:
+                      type: string
+                      example: Access Token expired
+                    detail:
+                      type: object
+                      properties:
+                        errorcode:
+                          type: string
+                          example: keymanagement.service.access_token_expired
+    ToManyRequests:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Your Quota Exceeded
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 429
+            text:
+              type: string
+              example: To Many Requests
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Error - Contact the administrator
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 500
+            text:
+              type: string
+              example: Internal Server Error

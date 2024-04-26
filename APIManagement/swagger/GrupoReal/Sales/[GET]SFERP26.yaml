@@ -1,0 +1,165 @@
+openapi: 3.0.1
+info:
+  title: SF ERP26 Sales
+  version: v1
+  description: <p></p>
+  x-targetEndpoint: >-
+    https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp26-sales
+servers:
+  - url: >-
+      https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp26-sales
+tags:
+  - name: Sales
+    description: Search for Customer Conditions
+paths:
+  "/{codPedido}/{codCadastro}/{codEmpresa}":
+    get:
+      tags:
+        - Sales
+      summary: Search for Customer Conditions
+      operationId: searchForCustomerConditions
+      parameters:
+        - name: codPedido
+          in: path
+          required: true
+          description: ID of the order to retrieve.
+          schema:
+            type: string
+        - name: codCadastro
+          in: path
+          required: true
+          description: ID of the customer to retrieve.
+          schema:
+            type: string
+        - name: codEmpresa
+          in: path
+          required: true
+          description: ID of the company to retrieve.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Operação realizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchForCustomerconditions"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        "429":
+          description: To Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ToManyRequests"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+components:
+  schemas:
+    SearchForCustomerconditions:
+      type: object
+      properties:
+        mediaDiasPagamento:
+          type: array
+          items:
+            type: object
+            properties:
+              prazoMedio:
+                type: string
+                example: -1
+              tiposPrazo:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    tipoPrazo:
+                      type: string
+                      example: 4
+                    parcelasCondicoesPagamento:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          seqPrazoCliente:
+                            type: string
+                            example: 2511
+                          tipoPrazo:
+                            type: string
+                            example: 4
+                          deValor:
+                            type: string
+                            example: 0
+                          ateValor:
+                            type: string
+                            example: 999999
+                          prazoMedio:
+                            type: string
+                            example: -1
+                          qtdeParcelas:
+                            type: string
+                            example: 0
+                          diasParcelas:
+                            type: string
+                            example: PRAZO DA PRACA
+                          encargo:
+                            type: string
+                            example: 0
+                          desconto:
+                            type: string
+                            example: 0
+        pipelinekey:
+          type: string
+          example: 74b5281f-4755-464f-a265-2295b9315f9e
+    Unauthorized:
+              type: object
+              properties:
+                fault:
+                  type: object
+                  properties:
+                    faultstring:
+                      type: string
+                      example: Access Token expired
+                    detail:
+                      type: object
+                      properties:
+                        errorcode:
+                          type: string
+                          example: keymanagement.service.access_token_expired
+    ToManyRequests:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Your Quota Exceeded
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 429
+            text:
+              type: string
+              example: To Many Requests
+    InternalServerError:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Error - Contact the administrator
+        status:
+          type: object
+          properties:
+            code:
+              type: number
+              example: 500
+            text:
+              type: string
+              example: Internal Server Error
