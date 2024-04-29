@@ -1,29 +1,29 @@
 openapi: 3.0.1
 info:
-  title: SF ERP13 Catalog
+  title: API Proxy Title
   version: v1
   description: <p></p>
   x-targetEndpoint: >-
-    https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp13-catalog
+    https://any_domain.apimanagement.br10.hana.ondemand.com:443/v1/any_proxy_path
 servers:
   - url: >-
-      https://grupo-real-qas.apimanagement.br10.hana.ondemand.com:443/v1/sf-erp13-catalog
+      https://any_domain.apimanagement.br10.hana.ondemand.com:443/v1/any_proxy_path
 tags:
-  - name: Catalog
-    description: Search for Flexibilized Prices
+  - name: any_tag_name
+    description: any_tag_description
 paths: 
   /:
     post:
       tags:
-        - Catálogo
-      summary: Search for Flexibilized Prices
-      operationId: searchFlexibilizedPrices
+        - any_tag_name
+      summary: any_summary
+      operationId: any_operation_id
       requestBody:
         description: Search for Flexibilized Prices
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Catalog"
+              $ref: "#/components/schemas/TagName"
         required: true
       responses:
         "200":
@@ -31,7 +31,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CatalogResponse"
+                $ref: "#/components/schemas/Any_Response"
         "401":
           description: Unauthorized
           content:
@@ -81,7 +81,7 @@ components:
         idGrupoEmpresa:
           type: string
           example: 1
-    CatalogResponse:
+    Any_Response:
       type: object
       properties:
         idCadastroCliente:
