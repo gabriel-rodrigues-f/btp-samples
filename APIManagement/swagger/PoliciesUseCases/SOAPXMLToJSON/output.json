@@ -1,0 +1,44 @@
+{
+  "Envelope": {
+      "Header": null,
+      "Body": {
+          "ZCS_ALTERA_ORDEM_SERV": [
+              {
+                  "ORDEM": "?",
+                  "TIPO_ENCE": "?",
+                  "ARBPL": "?",
+                  "TEXTO": "?",
+                  "CODAB": "?",
+                  "MATXT": "?",
+                  "ZZSERII": "?",
+                  "ZZSERIR": "?",
+                  "ZZCHII": "?",
+                  "ZZCHIR": "?",
+                  "LONGITUDE": "?",
+                  "LATITUDE": "?",
+                  "ZZSOLU": "?",
+                  "ZZCEST": "?",
+                  "ZZCPFTEC": "?",
+                  "ZZESTA": "?",
+                  "ZZSINAL": "?",
+                  "ZZKIT": "?",
+                  "FEGRP": "?",
+                  "FECOD": "?",
+                  "ZZCHIP": "?",
+                  "ZZCARR": "?",
+                  "ZZCABO": "?",
+                  "ZZBASE": "?",
+                  "ZZHUB": "?",
+                  "ZZBAT": "?",
+                  "ZZTBOB": "?",
+                  "ZZOPCHI": "?",
+                  "MCANC": "?",
+                  "ZZTEC": "?",
+                  "ZZMCA": "?",
+                  "ZZSERI": "?",
+                  "ZZDESC": "?"
+              }
+          ]
+      }
+  }
+}
