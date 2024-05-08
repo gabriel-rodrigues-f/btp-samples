@@ -1,7 +1,5 @@
 import com.sap.gateway.ip.core.customdev.util.Message
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Calendar
 
 Message processData(Message message) {
     def currentDate = new Date()
