@@ -1,7 +1,7 @@
 import com.sap.gateway.ip.core.customdev.util.Message
 
 def Message processData(Message request) {
-    InputStream body  = request.getBody(InputStream)
+    def body  = request.getBody(String)
     Map<String, String> properties  = request.getProperties()
     Map<String, String> headers     = request.getHeaders()
     String logProperty  = properties.logProperty       as String ?: ''
