@@ -1,0 +1,35 @@
+<mvc:View controllerName="com.lab.project1.controller.Home"
+	xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+	xmlns:core="sap.ui.core"
+	xmlns:m="sap.m"
+	xmlns:l="sap.ui.layout"
+	xmlns:grid="sap.ui.layout.cssgrid"
+	xmlns:f="sap.f"
+	xmlns:t="sap.tnt"
+	xmlns="sap.ui.webc.main" height="100%">
+	<m:Page showHeader="false" enableScrolling="true">
+        <m:content>
+			<l:VerticalLayout class="sapUiContentPadding sapUiResponsiveContentPadding sapUiNoMargin" width="auto">
+				<m:Title class="" text="Patrocinadores com esse pacote" titleStyle="H4" />
+			</l:VerticalLayout>
+			<m:Panel width="auto" backgroundDesign="Transparent" class="sapUiResponsiveContentPadding sapUiContentPadding">
+				<f:GridList id="gridList" items="{}">
+					<f:customLayout>
+						<grid:GridBasicLayout gridTemplateColumns="repeat(auto-fit, minmax(14rem, 1fr))" gridGap="1.0rem" />
+					</f:customLayout>
+					<f:GridListItem>
+						<m:VBox class="sapUiSmallMargin" wrap="Wrap" width="800px">
+							<m:HBox justifyContent="Start">
+								<m:Avatar src="{}" class="sapUiSmallMarginEnd" />
+								<m:VBox justifyContent="Center">
+									<m:Title text="{}" wrapping="true" />
+									<m:Label text="{}}" wrapping="true" />
+								</m:VBox>
+							</m:HBox>
+						</m:VBox>
+					</f:GridListItem>
+				</f:GridList>
+			</m:Panel>
+		</m:content>
+	</m:Page>
+</mvc:View>
