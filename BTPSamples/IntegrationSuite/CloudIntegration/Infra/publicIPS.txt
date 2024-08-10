@@ -1,1 +1,0 @@
-https://help.sap.com/docs/btp/sap-business-technology-platform/regions-and-api-endpoints-for-abap-environment?locale=en

@@ -1,5 +1,0 @@
-Catalog Service é o catálogo responsável por reunir e expor os serviços e CDSs expostos através do gateway. Trata-se de um serviço standard.
-
-Preencher os campos abaixo de acordo:
-Path Prefix: sap/opu/odata
-Service Collection URL: /IWFND/CATALOGSERVICE;v=2/ServiceCollection

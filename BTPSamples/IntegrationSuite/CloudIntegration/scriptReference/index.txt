@@ -1,4 +1,0 @@
-Após criar um groovy collection e configurar seu deploy, realize os passos abaixo para acessar um script em seu Integration Flow:
-
-1 - Clique em um ponto vazio no Integration Flow e clique em References -> Global -> Script Collection;
-2 - Insira o componente Groovy Script em seu Integration Flow, clique em Select -> Global Resources e selecione o script que deseja utilizar
