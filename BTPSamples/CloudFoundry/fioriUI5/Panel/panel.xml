@@ -1,0 +1,67 @@
+<mvc:View controllerName="com.lab2dev.btpexperience.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns:core="sap.ui.core"
+    xmlns:m="sap.m"
+    xmlns:l="sap.ui.layout"
+    xmlns:grid="sap.ui.layout.cssgrid"
+    xmlns:f="sap.f"
+    xmlns:t="sap.tnt"
+    xmlns="sap.ui.webc.main" height="100%">
+    <m:Page showHeader="false" enableScrolling="true">
+        <l:VerticalLayout class="sapUiResponsiveContentPadding" width="auto">
+            <m:Title class="sapUiResponsiveContentPadding" text="Administração" titleStyle="H3" />
+            <m:Title class="sapUiResponsiveContentPadding" text="Pacotes > Diamante" titleStyle="H4" />
+        </l:VerticalLayout>
+        <m:content>
+            <m:Panel width="auto" backgroundDesign="Transparent" class="sapUiResponsiveContentPadding">
+                <m:List >
+                    <f:GridListItem>
+                        <m:VBox height="auto" justifyContent="SpaceBetween">
+                            <m:HBox class="sapUiSmallMarginTop sapUiSmallMarginBegin">
+                                <core:Icon class="sapUiTinyMarginEnd" src="sap-icon://blank-tag-2"></core:Icon>
+                                <m:Title text="Pacote Diamente" titleStyle="H5" wrapping="true" />
+                            </m:HBox>
+                            <m:HBox alignItems="Center" width="100%" justifyContent="SpaceBetween">
+                                <m:layoutData>
+                                    <m:FlexItemData alignSelf="Start" />
+                                </m:layoutData>
+                                <m:HBox class="sapUiSmallMarginBegin">
+                                    <m:VBox >
+                                        <m:HBox >
+                                            <core:Icon class="sapUiTinyMarginEnd" src="sap-icon://loan"></core:Icon>
+                                            <m:Text text="Preço" wrapping="true" />
+                                        </m:HBox>
+                                        <m:Text text="R$ 10000,00" wrapping="true" />
+                                    </m:VBox>
+                                </m:HBox>
+                                <m:HBox class="sapUiSmallMarginBegin">
+                                    <m:VBox >
+                                        <m:HBox >
+                                            <core:Icon class="sapUiTinyMarginEnd" src="sap-icon://email-read"></core:Icon>
+                                            <m:Text text="Convites" wrapping="true"/>
+                                        </m:HBox>
+                                        <m:Text text="15 unidades" wrapping="true"/>
+                                    </m:VBox>
+                                </m:HBox>
+                                <m:HBox class="sapUiSmallMarginBegin">
+                                    <m:VBox >
+                                        <m:HBox >
+                                            <core:Icon class="sapUiTinyMarginEnd" src="sap-icon://customer-and-supplier"></core:Icon>
+                                            <m:Text text="Stand" wrapping="true"/>
+                                        </m:HBox>
+                                        <m:Text text="Tamanho: Grande" wrapping="true"/>
+                                    </m:VBox>
+                                </m:HBox>
+                                <m:Button class="sapUiSmallMargin button" width="auto" type="Emphasized" text="Editar dados" press="onOpenDialog">
+                                    <m:layoutData>
+                                        <m:FlexItemData alignSelf="End" />
+                                    </m:layoutData>
+                                </m:Button>
+                            </m:HBox>
+                        </m:VBox>
+                    </f:GridListItem>
+                </m:List>
+            </m:Panel>
+        </m:content>
+    </m:Page>
+</mvc:View>
