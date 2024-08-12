@@ -13,7 +13,7 @@ sap.ui.define([
     }),
 
     _getODataModel: async () => {
-      const oDataModel = new ODataModel("/v2/fiori/")
+      const oDataModel = new ODataModel("/service/service")
       return new Promise(function (resolve, reject) {
         oDataModel.attachMetadataLoaded(_ => resolve(oDataModel))
         oDataModel.attachMetadataFailed(_ => reject("It was not possible to read the metadata"))
