@@ -42,7 +42,7 @@ sap.ui.define([
       try {
         const oConnection = await this._getODataModel()
         return new Promise((resolve, reject) => {
-          oConnection[sFormattedMethod](...oParams, {
+          oConnection[sMethod](...oParams, {
             success: (oData, oResponse) => resolve(this._makeSuccessResponse(oData, oResponse)),
             error: oError => reject(this._makeErrorResponse(oError))
           })
