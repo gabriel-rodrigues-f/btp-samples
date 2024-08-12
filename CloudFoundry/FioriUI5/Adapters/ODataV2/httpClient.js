@@ -13,7 +13,8 @@ sap.ui.define([
     }),
 
     _getODataModel: async () => {
-      const oDataModel = new ODataModel("/v2/fiori/")
+      //  caso necessário, passe o valor do serviço como parâmetro através da função adaptRequest
+      const oDataModel = new ODataModel("/service/service")
       return new Promise(function (resolve, reject) {
         oDataModel.attachMetadataLoaded(_ => resolve(oDataModel))
         oDataModel.attachMetadataFailed(_ => reject(new Error("It was not possible to read the metadata")))
@@ -41,7 +42,7 @@ sap.ui.define([
       const oParams = oBody ? [sPath, oBody] : [sPath]
       try {
         const oConnection = await this._getODataModel()
-        return new Promise((resolve, reject) => {
+        return await new Promise((resolve, reject) => {
           oConnection[sMethod](...oParams, {
             success: (oData, oResponse) => resolve(this._makeSuccessResponse(oData, oResponse)),
             error: oError => reject(this._makeErrorResponse(oError))
