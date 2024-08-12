@@ -1,20 +1,20 @@
 read: async function ({ sPath }) {
   return await httpClient.adaptRequest({
-    sMethod: 'READ',
+    sMethod: 'read',
     sPath
   })
 },
 
 remove: async function ({ sPath }) {
   return await httpClient.adaptRequest({
-    sMethod: 'REMOVE',
+    sMethod: 'remove',
     sPath
   })
 },
 
 create: async function ({ sPath, oBody }) {
   return await httpClient.adaptRequest({
-    sMethod: 'CREATE',
+    sMethod: 'created',
     sPath,
     oBody
   })
@@ -22,7 +22,7 @@ create: async function ({ sPath, oBody }) {
 
 update: async function ({ sPath, oBody }) {
   return await httpClient.adaptRequest({
-    sMethod: 'UPDATE',
+    sMethod: 'update',
     sPath,
     oBody
   })

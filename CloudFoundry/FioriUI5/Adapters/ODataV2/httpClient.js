@@ -24,8 +24,8 @@ sap.ui.define([
       const { CREATED, OK, NO_CONTENT } = this._makeResponseStatus()
       const httpResponse = { status: oResponse.statusCode, body: oData }
       if (oResponse.statusCode == OK) httpResponse.ok = true
-      if (oResponse.statusCode == NO_CONTENT) httpResponse.ok = true
-      if (oResponse.statusCode == CREATED) httpResponse.noContent = true
+      if (oResponse.statusCode == NO_CONTENT) httpResponse.noContent = true
+      if (oResponse.statusCode == CREATED) httpResponse.created = true
       return httpResponse
     },
 
@@ -38,7 +38,6 @@ sap.ui.define([
     },
 
     adaptRequest: async function ({ sPath, sMethod, oBody }) {
-      const sFormattedMethod = sMethod.toLowerCase()
       const oParams = oBody ? [sPath, oBody] : [sPath]
       try {
         const oConnection = await this._getODataModel()
