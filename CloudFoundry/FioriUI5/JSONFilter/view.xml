@@ -1,0 +1,25 @@
+<mvc:View controllerName="btp.samples.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:table="sap.ui.table"
+    xmlns:u="sap.ui.unified"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    >
+    <Page id="page" showHeader="false" title="{i18n>title}">
+        <table:Table
+            id="idTable"
+        >
+            <table:extension>
+                <OverflowToolbar>
+                    <ToolbarSpacer />
+                    <SearchField
+                        placeholder="Pesquisar"
+                        width="13.75rem"
+                        liveChange=".handleSearchField"
+                    />
+                </OverflowToolbar>
+            </table:extension>
+        </table:Table>
+    </Page>
+</mvc:View>
