@@ -6,7 +6,7 @@ def Message processData(Message message) {
   def properties              = message.getProperties()
   def camelSplitComplete      = properties.CamelSplitComplete                 ?: ''
   def camelSplitSize          = properties.CamelSplitSize                     ?: ''
-  def pIdentificadorPayload   = properties.p_identificadorPayload as String   ?: 'Integration Flow'
+  def messageIdentifier   = properties.messageIdentifier as String   ?: 'Integration Flow'
 
   if (messageLog && message.getBody(String)) {
     def messageBytes        = message.getBody(String).getBytes().length
@@ -17,9 +17,9 @@ def Message processData(Message message) {
       def updatedCamelSplitSize   = (messageKiloBytes * camelSplitSize.toInteger()).setScale(2, BigDecimal.ROUND_HALF_UP)
 
       messageLog.with {
-        addCustomHeaderProperty("${pIdentificadorPayload} - Total KiloBytes", "${roundedKiloBytes}")
-        addCustomHeaderProperty("${pIdentificadorPayload} - Iterations", "${camelSplitSize}")
-        addCustomHeaderProperty("${pIdentificadorPayload} - KiloBytes x Iterations", "${updatedCamelSplitSize}")
+        addCustomHeaderProperty("${messageIdentifier} - Total KiloBytes", "${roundedKiloBytes}")
+        addCustomHeaderProperty("${messageIdentifier} - Iterations", "${camelSplitSize}")
+        addCustomHeaderProperty("${messageIdentifier} - KiloBytes x Iterations", "${updatedCamelSplitSize}")
       }
     }
   }
