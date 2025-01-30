@@ -1,0 +1,7 @@
+<OAuthV2 xmlns="http://www.sap.com/apimgmt" async="false" continueOnError="false" enabled="true">
+   <Operation>GenerateAccessToken</Operation>
+   <GenerateResponse />
+   <SupportedGrantTypes>
+      <GrantType>client_credentials</GrantType>
+   </SupportedGrantTypes>
+</OAuthV2>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><PolicyTemplateContainer>
+    <name>OAuthProxyBasicAuthCI</name>
+    <version>1</version>
+    <title>OAuth Proxy x Basic Auth CI</title>
+    <description>- Authenticate Proxy usign access token
+- Authenticate Cloud Integration through basic authentication</description>
+    <proxyEndPointxml>&lt;preFlow&gt;&lt;name&gt;PreFlow&lt;/name&gt;&lt;request&gt;&lt;isRequest&gt;true&lt;/isRequest&gt;&lt;steps&gt;&lt;step&gt;&lt;policy_name&gt;OAuthVerification&lt;/policy_name&gt;&lt;condition&gt;&lt;/condition&gt;&lt;sequence&gt;1&lt;/sequence&gt;&lt;/step&gt;&lt;step&gt;&lt;policy_name&gt;JSONThreatProtection&lt;/policy_name&gt;&lt;condition&gt;&lt;/condition&gt;&lt;sequence&gt;3&lt;/sequence&gt;&lt;/step&gt;&lt;step&gt;&lt;policy_name&gt;XMLThreatProtection&lt;/policy_name&gt;&lt;condition&gt;&lt;/condition&gt;&lt;sequence&gt;4&lt;/sequence&gt;&lt;/step&gt;&lt;step&gt;&lt;policy_name&gt;Quota&lt;/policy_name&gt;&lt;condition&gt;&lt;/condition&gt;&lt;sequence&gt;5&lt;/sequence&gt;&lt;/step&gt;&lt;step&gt;&lt;policy_name&gt;RaiseFault&lt;/policy_name&gt;&lt;condition&gt;ratelimit.failed = "true"&lt;/condition&gt;&lt;sequence&gt;6&lt;/sequence&gt;&lt;/step&gt;&lt;step&gt;&lt;policy_name&gt;RemoveAuthorizationHeader&lt;/policy_name&gt;&lt;condition&gt;&lt;/condition&gt;&lt;sequence&gt;2&lt;/sequence&gt;&lt;/step&gt;&lt;/steps&gt;&lt;/request&gt;&lt;response&gt;&lt;isRequest&gt;false&lt;/isRequest&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/response&gt;&lt;/preFlow&gt;&lt;postFlow&gt;&lt;name&gt;PostFlow&lt;/name&gt;&lt;request&gt;&lt;isRequest&gt;true&lt;/isRequest&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/request&gt;&lt;response&gt;&lt;isRequest&gt;false&lt;/isRequest&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/response&gt;&lt;/postFlow&gt;&lt;defaultFaultRule&gt;&lt;name&gt;defaultFaultRule&lt;/name&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/defaultFaultRule&gt;&lt;postClientFlow&gt;&lt;name&gt;postClientFlow&lt;/name&gt;&lt;response&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/response&gt;&lt;/postClientFlow&gt;</proxyEndPointxml>
+    <life_cycle>
+        <changed_by>gabriel.freire@lab2dev.com</changed_by>
+        <created_by>gabriel.freire@lab2dev.com</created_by>
+    </life_cycle>
+    <targetEndPointxml>&lt;preFlow&gt;&lt;name&gt;PreFlow&lt;/name&gt;&lt;request&gt;&lt;isRequest&gt;true&lt;/isRequest&gt;&lt;steps&gt;&lt;step&gt;&lt;policy_name&gt;BasicAuth&lt;/policy_name&gt;&lt;condition&gt;&lt;/condition&gt;&lt;sequence&gt;2&lt;/sequence&gt;&lt;/step&gt;&lt;step&gt;&lt;policy_name&gt;getCredentials&lt;/policy_name&gt;&lt;condition&gt;&lt;/condition&gt;&lt;sequence&gt;1&lt;/sequence&gt;&lt;/step&gt;&lt;/steps&gt;&lt;/request&gt;&lt;response&gt;&lt;isRequest&gt;false&lt;/isRequest&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/response&gt;&lt;/preFlow&gt;&lt;postFlow&gt;&lt;name&gt;PostFlow&lt;/name&gt;&lt;request&gt;&lt;isRequest&gt;true&lt;/isRequest&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/request&gt;&lt;response&gt;&lt;isRequest&gt;false&lt;/isRequest&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/response&gt;&lt;/postFlow&gt;&lt;defaultFaultRule&gt;&lt;name&gt;defaultFaultRule&lt;/name&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/defaultFaultRule&gt;&lt;postClientFlow&gt;&lt;name&gt;postClientFlow&lt;/name&gt;&lt;response&gt;&lt;steps&gt;&lt;/steps&gt;&lt;/response&gt;&lt;/postClientFlow&gt;</targetEndPointxml>
+    <policies>
+        <policy type="XMLThreatProtection">XMLThreatProtection</policy>
+        <policy type="RaiseFault">RaiseFault</policy>
+        <policy type="BasicAuth">BasicAuth</policy>
+        <policy type="KeyValueMapOperations">getCredentials</policy>
+        <policy type="OAuthV2">OAuthVerification</policy>
+        <policy type="RaiseFault">defaultRaiseFaultPolicy</policy>
+        <policy type="Quota">Quota</policy>
+        <policy type="AssignMessage">RemoveAuthorizationHeader</policy>
+        <policy type="JSONThreatProtection">JSONThreatProtection</policy>
+    </policies>
+    <fileResources/>
+</PolicyTemplateContainer>
