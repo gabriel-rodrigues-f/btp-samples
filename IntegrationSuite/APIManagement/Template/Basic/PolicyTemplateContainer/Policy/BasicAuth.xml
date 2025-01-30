@@ -1,0 +1,7 @@
+<BasicAuthentication async='true' continueOnError='false' enabled='true' xmlns='http://www.sap.com/apimgmt'>
+	<Operation>Encode</Operation>
+	<IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+	<User ref='private.basicAuth.username'></User>
+	<Password ref='private.basicAuth.password'></Password>
+	<AssignTo createNew="true">request.header.Authorization</AssignTo>
+</BasicAuthentication>

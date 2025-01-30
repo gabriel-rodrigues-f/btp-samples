@@ -2,22 +2,32 @@ openapi: 3.0.1
 info:
   title: SampleIntegrationFlow
   version: v1
-  description: <p>This API allows you to create sample records in the integration flow system. It provides endpoints for adding records and handling common errors such as Too Many Requests or Internal Server Errors</p>
-  x-targetEndpoint: https://lab2dev.test.apimanagement.us10.hana.ondemand.com:443/1/sample
+  description: |
+    This API allows you to create sample records in the integration flow system.
+    It provides endpoints for adding records and handling common errors such as
+    "Too Many Requests" or "Internal Server Errors".
+  x-targetEndpoint: >-
+    https://dev-amazon-web-services-ncm543yw.it-cpi019-rt.cfapps.us10-002.hana.ondemand.com:443/http/sample
 servers:
-  - url: https://lab2dev.test.apimanagement.us10.hana.ondemand.com:443/1/sample
+  - url: >-
+      https://lab2dev.test.apimanagement.us10.hana.ondemand.com:443/1/sample
     description: Development server
+
 tags:
   - name: Record routes
     description: Create mocked records through Cloud Integration
+
 paths:
-  "/":
+  /record:
     post:
       tags:
         - Record routes
       summary: Create a sample record
       operationId: createSampleRecord
-      description: <p> This endpoint allows you to create a sample record in the system. You need to provide a valid body and text parameter. A successful request will return an ID for the created record.</p>
+      description: |
+        This endpoint allows you to create a sample record in the system. 
+        You need to provide a valid body and text parameter. 
+        A successful request will return an ID for the created record.
       requestBody:
         description: Request payload to create a new record
         content:
@@ -28,8 +38,8 @@ paths:
               validRequest:
                 summary: A valid request for creating a record
                 value:
-                  body: valid_body
-                  text: valid_text
+                  body: "valid_body"
+                  text: "valid"
         required: true
       responses:
         "200":
@@ -42,7 +52,7 @@ paths:
                 successResponse:
                   summary: Response for a successful record creation
                   value:
-                    id: 1
+                    id: '1'
         "429":
           description: Too Many Requests - Throttling limit exceeded
           content:
@@ -53,10 +63,10 @@ paths:
                 tooManyRequestsResponse:
                   summary: Response when the request limit has been exceeded
                   value:
-                    message: Too Many Requests
+                    message: "Too Many Requests"
                     status:
                       code: 429
-                      text: Your Quota Exceeded
+                      text: "Your Quota Exceeded"
         "500":
           description: Internal Server Error
           content:
@@ -67,10 +77,11 @@ paths:
                 internalErrorResponse:
                   summary: Response when an internal error occurs
                   value:
-                    message: Internal Error - Contact the administrator
+                    message: "Internal Error - Contact the administrator"
                     status:
                       statusCode: 500
-                      message: Internal Server Error
+                      message: "Internal Server Error"
+
 components:
   schemas:
     Catalog:
@@ -79,7 +90,7 @@ components:
         body:
           type: string
           description: The body content for the record, typically a description or data string.
-          example: valid_body
+          example: "valid_body"
         text:
           type: integer
           description: A numeric value associated with the record.
@@ -87,20 +98,22 @@ components:
       required:
         - body
         - text
+
     Response:
       type: object
       properties:
         id:
           type: string
           description: The ID of the created record.
-          example: 1
+          example: '1'
+
     ToManyRequests:
       type: object
       properties:
         message:
           type: string
           description: Message indicating that the request limit has been exceeded.
-          example: Too ManyRequests
+          example: "Too Many Requests"
         status:
           type: object
           properties:
@@ -111,14 +124,15 @@ components:
             text:
               type: string
               description: A human-readable message explaining the error.
-              example: Your Quota Exceeded
+              example: "Your Quota Exceeded"
+
     InternalServerError:
       type: object
       properties:
         message:
           type: string
           description: A message detailing the internal error.
-          example: Internal Error - Contact the administrator
+          example: "Internal Error - Contact the administrator"
         status:
           type: object
           properties:
@@ -129,4 +143,13 @@ components:
             message:
               type: string
               description: A message explaining the internal error.
-              example: Internal Server Error
+              example: "Internal Server Error"
+
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+
+security:
+  - apiKeyHeader: []

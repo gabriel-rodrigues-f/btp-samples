@@ -1,0 +1,9 @@
+<AssignMessage async="false" continueOnError="true" enabled="true" xmlns='http://www.sap.com/apimgmt'>
+    <Remove>   
+     	<Headers>      
+			<Header name="Authorization"></Header>   
+          </Headers>
+     </Remove> 
+	<IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+	<AssignTo createNew="false" type="request"></AssignTo>
+</AssignMessage>

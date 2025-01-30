@@ -1,0 +1,9 @@
+<Quota async="false" continueOnError="true" enabled="true" type="calendar" xmlns="http://www.sap.com/apimgmt">
+    <Identifier ref="client_id"/>
+	<Allow countRef="apiproduct.developer.quota.limit"/>
+ 	<Interval ref="apiproduct.developer.quota.interval"/>
+    <Distributed>true</Distributed>
+ 	<StartTime>2015-2-11 12:00:00</StartTime>
+	<Synchronous>true</Synchronous>
+ 	<TimeUnit ref="apiproduct.developer.quota.timeunit"/>
+</Quota>

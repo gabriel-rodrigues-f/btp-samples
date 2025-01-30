@@ -1,0 +1,8 @@
+https://help.sap.com/docs/integration-suite/sap-integration-suite/creating-api-from-sap-cloud-integration-api-provider
+
+
+- criar uma instância de PI Runtime do tipo API e inserir as roles como na
+documentação e gerar uma service key
+- criar um provider no Integration Suite e preencher os valores com os valores da
+service key gerada no passo anterior
+- criar uma proxy, vincular o provider e buscar pelo integration flow
