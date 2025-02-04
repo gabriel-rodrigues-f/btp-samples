@@ -1,0 +1,1 @@
+https://learning.sap.com/learning-journeys/getting-started-with-sap-cloud-application-programming-model/incorporating-common-reuse-aspects_ee2c8c77-500b-4323-a18f-a5e1502b7037

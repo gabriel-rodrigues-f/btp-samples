@@ -1,0 +1,3925 @@
+openapi: 3.0.1
+info:
+  title: SAP Cloud ALM Custom Processes
+  description: >-
+    This is a set of REST APIs that are used to customize Solution Processes in
+    SAP Cloud ALM Process Authoring 
+
+    <p>The required authorisation scopes, to use the API, are:</p>
+
+    <ul>
+     <li>calm-api.processauthoring.read: Read process authoring entities.</li>
+     <li>calm-api.processauthoring.write: Write process authoring entities.</li>
+     <li>calm-api.processauthoring.delete: Delete process authoring entities.</li>
+    </ul>
+  version: 1.0.0
+  x-targetEndpoint: 'https://sandbox.api.sap.com/SAPCALM/calm-processauthoring/v1'
+servers:
+  - url: >-
+      https://68224010trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com:443/CALM_PMGE
+security:
+  - OAuth2: []
+paths:
+  /businessProcesses:
+    get:
+      tags:
+        - Business Process
+      summary: List all Business Processes
+      description: >-
+        Return all Business Processes with basic information. Supported query
+        parameters are $skip / $top for paging, $count to get an inline count in
+        the response body, $orderBy on a property.
+      operationId: listAllBusinessProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            format: int32
+            default: 2147483647
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: stableId
+          in: query
+          description: Stable identifier
+          required: false
+          schema:
+            type: string
+          example: 9e45cb54-3bca-4db9-adad-ddeaedef505b
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    post:
+      tags:
+        - Business Process
+      summary: Create a Business Process
+      description: >-
+        Create a new Business Process with the data provided via the request
+        body payload
+      operationId: createBusinessProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessProcessCreate'
+        required: true
+      responses:
+        '201':
+          description: Resource Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/businessProcesses/{businessProcessId}':
+    get:
+      tags:
+        - Business Process
+      summary: Get a Business Process by ID
+      description: >-
+        Return a single Business Process identified by businessProcessId via the
+        query parameter.
+      operationId: getBusinessProcessById
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: businessProcessId
+          in: path
+          description: Business Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: aaf91d12-1be2-4b40-9701-d8751cffa9f6
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    delete:
+      tags:
+        - Business Process
+      summary: Delete a Business Process
+      description: >-
+        Delete a Business Process. Yield: when you call this API, the given
+        Business Process will be deleted without further notice
+      operationId: deleteSingleBusinessProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: businessProcessId
+          in: path
+          description: Business Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: aaf91d12-1be2-4b40-9701-d8751cffa9f6
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityNotFoundException'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtagNotMatchingException'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiServiceException'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.delete
+    patch:
+      tags:
+        - Business Process
+      summary: Update a Business Process
+      description: Update name and/or description of a single Business Process
+      operationId: updateBusinessProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: businessProcessId
+          in: path
+          description: Business Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: aaf91d12-1be2-4b40-9701-d8751cffa9f6
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BusinessProcessUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BusinessProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  /businessProcesses/$count:
+    get:
+      tags:
+        - Business Process
+      summary: Count of Business Processes
+      description: Return count of all Business Processes
+      operationId: getCountOfAllBusinessProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  /solutionProcesses:
+    get:
+      tags:
+        - Solution Process
+      summary: List all Solution Processes
+      description: >-
+        Return all Solution Processes with basic information. Supported query
+        parameters are $skip / $top for paging, $count to get an inline count in
+        the response body, $orderBy on a property.
+      operationId: listAllSolutionProcesses
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            minimum: 1
+            type: integer
+            format: int32
+            default: 2147483647
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: externalId
+          in: query
+          description: External Id
+          required: false
+          schema:
+            type: string
+        - name: stableId
+          in: query
+          description: Stable identifier applicable to both draft and active versions.
+          required: false
+          schema:
+            type: string
+          example: 876d3d73-91d5-4ab3-a2f4-fd7e6d4a78e8
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    post:
+      tags:
+        - Solution Process
+      summary: Create a Solution Process
+      description: >-
+        Create a new Solution Process with the data provided via the request
+        body payload. The countries are comma separated list of country/region
+        ISO codes. Almost all countries in ISO_3166-1_alpha-2 can be used. 'XX'
+        or empty value can be used if you want to include all countries.
+      operationId: createSolutionProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProcessCreate'
+        required: true
+      responses:
+        '201':
+          description: Resource Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/solutionProcesses/{solutionProcessId}':
+    get:
+      tags:
+        - Solution Process
+      summary: Get a Solution Process by ID
+      description: >-
+        Return a single Solution Process identified by solutionProcessId via the
+        query parameter.
+      operationId: getSolutionProcessById
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 1c981487-e155-4a87-96b0-234bc117f199
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    delete:
+      tags:
+        - Solution Process
+      summary: Delete a Solution Process
+      description: >-
+        Delete a Solution Process. Yield: when you call this API, the given
+        Business Process will be deleted without further notice.
+      operationId: deleteSingleSolutionProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 1c981487-e155-4a87-96b0-234bc117f199
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityNotFoundException'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtagNotMatchingException'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiServiceException'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.delete
+    patch:
+      tags:
+        - Solution Process
+      summary: Update a Solution Process
+      description: >-
+        Update name and/or description of a single Solution Process. The
+        countries are comma separated list of country/region ISO codes. Almost
+        all countries in ISO_3166-1_alpha-2 can be used. 'XX' or empty value can
+        be used if you want to include all countries.
+      operationId: updateSolutionProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 1c981487-e155-4a87-96b0-234bc117f199
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProcessUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  /solutionProcesses/$count:
+    get:
+      tags:
+        - Solution Process
+      summary: Count of Solution Processes
+      description: Return count of all Solution Processes.
+      operationId: getCountOfAllSolutionProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/publishSolutionProcess/{solutionProcessId}':
+    post:
+      tags:
+        - Solution Process
+      summary: Publish a Solution Process
+      description: Publish a Solution Process.
+      operationId: publish
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 2f512e2c-febd-4b18-8890-b81828691ce5
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/createDraftSolutionProcess/{solutionProcessId}':
+    post:
+      tags:
+        - Solution Process
+      summary: Create a Draft Solution Process
+      description: Create a Draft Solution Process from a Published one.
+      operationId: createDraftSolutionProcess
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessId
+          in: path
+          description: Published Solution Process ID
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 6ff7761e-ed0c-45ed-87a5-30151c3bd310
+      responses:
+        '201':
+          description: Resource Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcess'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/solutionProcesses/{solutionProcessId}/solutionValueFlowDiagram':
+    get:
+      tags:
+        - Solution Process - Solution Value Flow Diagram
+      summary: Get assigned Solution Value Flow Diagram
+      description: >-
+        Return the single assigned Solution Value Flow Diagram to the Solution
+        Process.
+      operationId: getAssignedSolutionValueFlowDiagram
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: cf44bfa3-3977-4ffb-abb1-89d8ce56be59
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionProcesses/{solutionProcessId}/solutionProcessFlows':
+    get:
+      tags:
+        - Solution Process - Solution Process Flow
+      summary: List all Assigned Solution Process Flows
+      description: >-
+        Return all Assigned Solution Process Flows with basic information.
+        Supported query parameters are $skip / $top for paging, $count to get an
+        inline count in the response body, $orderBy on a property.
+      operationId: listAllAssignedSolutionProcessFlows
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            maximum: 500
+            minimum: 1
+            type: integer
+            format: int32
+            default: 100
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: cf44bfa3-3977-4ffb-abb1-89d8ce56be59
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionProcesses/{solutionProcessId}/solutionProcessFlows/$count':
+    get:
+      tags:
+        - Solution Process - Solution Process Flow
+      summary: Count of Assigned Solution Process Flows
+      description: Return count of all Assigned Solution Process Flows
+      operationId: getCountOfAllAssignedSolutionProcessFlows
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: cf44bfa3-3977-4ffb-abb1-89d8ce56be59
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionProcessFlows/{solutionProcessFlowId}/solutionProcessFlowDiagrams':
+    get:
+      tags:
+        - Solution Process Flow - Solution Process Flow Diagram
+      summary: Get all Solution Process Flow Diagrams of a Solution Process Flow
+      description: >-
+        Get all Solution Process Flow Diagrams of a Solution Process Flow
+        specified by its Id
+      operationId: listAllSolutionProcessFlowDiagramsOfSpf
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            maximum: 500
+            minimum: 1
+            type: integer
+            format: int32
+            default: 100
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: solutionProcessFlowId
+          in: path
+          description: Solution Process Flow Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 4f300c5f-0987-4525-a280-5e776f5066b8
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    post:
+      tags:
+        - Solution Process Flow - Solution Process Flow Diagram
+      summary: Create a Solution Process Flow Diagram from SVG
+      description: >-
+        Create a Solution Process Flow Diagram with the data provided via the
+        request body payload. Note: There is a size limit of 10MB for the SVG.
+      operationId: createSolutionProcessFlowDiagramOfSpf
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessFlowId
+          in: path
+          description: Solution Process Flow Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 4f300c5f-0987-4525-a280-5e776f5066b8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProcessFlowDiagramCreate'
+        required: true
+      responses:
+        '201':
+          description: Resource Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/solutionProcessFlows/{solutionProcessFlowId}/solutionProcessFlowDiagrams/bpmn':
+    post:
+      tags:
+        - Solution Process Flow - Solution Process Flow Diagram
+      summary: Create a Solution Process Flow Diagram from BPMN
+      description: >-
+        Create a single Solution Process Flow Diagram by importing a BPMN model.
+        Note: There is a size limit of 10MB for the BPMN.
+      operationId: createSolutionProcessFlowDiagramFromBpmn
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessFlowId
+          in: path
+          description: Solution Process Flow Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 4f300c5f-0987-4525-a280-5e776f5066b8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProcessFlowDiagramCreateBpmn'
+        required: true
+      responses:
+        '201':
+          description: Resource Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/solutionProcessFlows/{solutionProcessFlowId}/solutionProcessFlowDiagrams/{solutionProcessFlowDiagramId}':
+    get:
+      tags:
+        - Solution Process Flow - Solution Process Flow Diagram
+      summary: Get a Solution Process Flow Diagram
+      description: Get a Solution Process Flow Diagram by ID
+      operationId: getSolutionProcessFlowDiagramOfSpfById
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessFlowDiagramId
+          in: path
+          description: Solution Process Flow Diagram Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 76b6be59-a5de-460b-ac05-5f8b58ce6f7c
+        - name: solutionProcessFlowId
+          in: path
+          description: Solution Process Flow Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 4f300c5f-0987-4525-a280-5e776f5066b8
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionProcessFlows/{solutionProcessFlowId}/solutionProcessFlowDiagrams/$count':
+    get:
+      tags:
+        - Solution Process Flow - Solution Process Flow Diagram
+      summary: Count of Assigned Solution Process Flow Diagrams
+      description: Return count of all Assigned Solution Process Flow Diagrams
+      operationId: getCountOfAllSolutionProcessFlowDiagramOfSpf
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessFlowId
+          in: path
+          description: Solution Process Flow Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 4f300c5f-0987-4525-a280-5e776f5066b8
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionProcesses/{solutionProcessId}/assets':
+    get:
+      tags:
+        - Solution Process - Asset (Accelerator)
+      summary: List all Assigned Accelerators
+      description: >-
+        Return all Assigned Accelerators with basic information. Supported query
+        parameters are $skip / $top for paging, $count to get an inline count in
+        the response body, $orderBy on a property.
+      operationId: listAllAssignedAssets
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            maximum: 500
+            minimum: 1
+            type: integer
+            format: int32
+            default: 100
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: cf44bfa3-3977-4ffb-abb1-89d8ce56be59
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    post:
+      tags:
+        - Solution Process - Asset (Accelerator)
+      summary: Create and Assign an Accelerator
+      description: >-
+        Create and Assign an Accelerators with the data provided via the request
+        body payload. The countries are comma separated list of country/region
+        ISO codes. Almost all countries in ISO_3166-1_alpha-2 can be used. 'XX'
+        or empty value can be used if you want to include all countries.
+      operationId: createAndAssignAsset
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: cf44bfa3-3977-4ffb-abb1-89d8ce56be59
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetCreate'
+        required: true
+      responses:
+        '201':
+          description: Resource Created Successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/solutionProcesses/{solutionProcessId}/assets/$count':
+    get:
+      tags:
+        - Solution Process - Asset (Accelerator)
+      summary: Count of Assigned Accelerators
+      description: Return count of all Assigned Accelerators.
+      operationId: getCountOfAllAssignedAssets
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessId
+          in: path
+          description: Solution Process Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: cf44bfa3-3977-4ffb-abb1-89d8ce56be59
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  /solutionValueFlowDiagrams:
+    get:
+      tags:
+        - Solution Value Flow Diagram
+      summary: List all Solution Value Flow Diagrams
+      description: >-
+        Return all Solution Value Flow Diagrams with basic information.
+        Supported query parameters are $skip / $top for paging, $count to get an
+        inline count in the response body, $orderBy on a property.
+      operationId: listAllSolutionValueFlowDiagrams
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            maximum: 500
+            minimum: 1
+            type: integer
+            format: int32
+            default: 100
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: stableId
+          in: query
+          description: Stable identifier applicable to both draft and active versions.
+          required: false
+          schema:
+            type: string
+          example: 2d362cca-2474-4d4b-bf3e-ae1d6294e224
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  /solutionValueFlowDiagrams/$count:
+    get:
+      tags:
+        - Solution Value Flow Diagram
+      summary: Count of Solution Value Flow Diagrams
+      description: Return count of all Solution Value Flow Diagrams.
+      operationId: getCountOfAllSolutionValueFlowDiagram
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionValueFlowDiagrams/{solutionValueFlowDiagramId}':
+    get:
+      tags:
+        - Solution Value Flow Diagram
+      summary: Get a Solution Value Flow Diagram by ID
+      description: >-
+        Return a single Solution Value Flow Diagram identified by
+        solutionValueFlowDiagramId via the query parameter.
+      operationId: getSolutionValueFlowDiagramById
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionValueFlowDiagramId
+          in: path
+          description: Solution Value Flow Diagram Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 54434ae4-3350-4b64-ae72-26ec3846c389
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    patch:
+      tags:
+        - Solution Value Flow Diagram
+      summary: Update a Solution Value Flow Diagram
+      description: >-
+        Update name and/or SVG of a single Solution Value Flow Diagram. Note:
+        There is a size limit of 10MB for the SVG.
+      operationId: updateSolutionValueFlowDiagram
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionValueFlowDiagramId
+          in: path
+          description: Solution Value Flow Diagram Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 54434ae4-3350-4b64-ae72-26ec3846c389
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionValueFlowDiagramUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionValueFlowDiagram'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  /solutionProcessFlows/$count:
+    get:
+      tags:
+        - Solution Process Flow
+      summary: Count of Solution Process Flows
+      description: Return count of all Solution Value Flows
+      operationId: getSolutionProcessFlowCount
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  /solutionProcessFlows:
+    get:
+      tags:
+        - Solution Process Flow
+      summary: List all Solution Process Flows
+      description: >-
+        Return all Solution Value Flows with basic information. Supported query
+        parameters are $skip / $top for paging, $count to get an inline count in
+        the response body, $orderBy on a property.
+      operationId: listAllSolutionProcessFlows
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            maximum: 500
+            minimum: 1
+            type: integer
+            format: int32
+            default: 100
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: stableId
+          in: query
+          description: Stable identifier applicable to both draft and active versions.
+          required: false
+          schema:
+            type: string
+          example: 0f51ce16-26fc-48c0-bd13-8ad2703890e8
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionProcessFlows/{solutionProcessFlowId}':
+    get:
+      tags:
+        - Solution Process Flow
+      summary: Get a Solution Process Flow by ID
+      description: >-
+        Return a single Solution Process Flow identified by
+        solutionProcessFlowId via the query parameter.
+      operationId: getSolutionProcessFlowById
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessFlowId
+          in: path
+          description: Solution Process Flow Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 5f51ea0b-1335-4848-9333-c26a0e0117ba
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    patch:
+      tags:
+        - Solution Process Flow
+      summary: Update a Solution Process Flow
+      description: Update name and/or description of a single Solution Process Flow.
+      operationId: updateSolutionProcessFlow
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessFlowId
+          in: path
+          description: Solution Process Flow Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 5f51ea0b-1335-4848-9333-c26a0e0117ba
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProcessFlowUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlow'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  /solutionProcessFlowDiagrams:
+    get:
+      tags:
+        - Solution Process Flow Diagram
+      summary: List all Solution Process Flow Diagrams
+      description: >-
+        Return all Solution Process Flow Diagrams with basic information.
+        Supported query parameters are $skip / $top for paging, $count to get an
+        inline count in the response body, $orderBy on a property.
+      operationId: listAllSolutionProcessFlowDiagrams
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            maximum: 500
+            minimum: 1
+            type: integer
+            format: int32
+            default: 100
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+        - name: stableId
+          in: query
+          description: Stable identifier applicable to both draft and active versions.
+          required: false
+          schema:
+            type: string
+          example: ebefcddd-99cc-4f42-baff-0e9ef33d9928
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/solutionProcessFlowDiagrams/{solutionProcessFlowDiagramId}':
+    get:
+      tags:
+        - Solution Process Flow Diagram
+      summary: Get a Solution Process Flow Diagram
+      description: Get a Solution Process Flow Diagram by ID
+      operationId: getSolutionProcessFlowDiagramById
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: solutionProcessFlowDiagramId
+          in: path
+          description: Solution Process Flow Diagram Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 87e4492e-4a9b-459d-b462-fb545613791c
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+    delete:
+      tags:
+        - Solution Process Flow Diagram
+      summary: Delete a Solution Process Flow Diagram
+      description: >-
+        Delete a Solution Process Flow Diagram. Yield: when you call this API,
+        the given Solution Process Flow Diagram will be deleted without further
+        notice
+      operationId: deleteSingleSolutionProcessFlowDiagram
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessFlowDiagramId
+          in: path
+          description: Solution Process Flow Diagram Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 87e4492e-4a9b-459d-b462-fb545613791c
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityNotFoundException'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtagNotMatchingException'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiServiceException'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.delete
+    patch:
+      tags:
+        - Solution Process Flow Diagram
+      summary: Update a Solution Process Flow Diagram from SVG
+      description: >-
+        Update name and/or SVG of a single Solution Process Flow Diagram. Note:
+        There is a size limit of 10MB for the SVG.
+      operationId: updateSolutionProcessFlowDiagram
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessFlowDiagramId
+          in: path
+          description: Solution Process Flow Diagram Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 87e4492e-4a9b-459d-b462-fb545613791c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProcessFlowDiagramUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagram'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  '/solutionProcessFlowDiagrams/{solutionProcessFlowDiagramId}/bpmn':
+    patch:
+      tags:
+        - Solution Process Flow Diagram
+      summary: Update a Solution Process Flow Diagram from BPMN
+      description: >-
+        Update name and/or BPMN of a single Solution Process Flow Diagram. Note:
+        There is a size limit of 10MB for the BPMN.
+      operationId: updateSolutionProcessFlowDiagramBPMN
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: solutionProcessFlowDiagramId
+          in: path
+          description: Solution Process Flow Diagram Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 87e4492e-4a9b-459d-b462-fb545613791c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SolutionProcessFlowDiagramUpdateBpmn'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SolutionProcessFlowDiagramBpmn'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  /solutionProcessFlowDiagrams/$count:
+    get:
+      tags:
+        - Solution Process Flow Diagram
+      summary: Count of Solution Process Flow Diagrams
+      description: Return count of all Solution Process Flow Diagrams.
+      operationId: getCountOfAllSolutionProcessFlowDiagram
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  /assets:
+    get:
+      tags:
+        - Asset (Accelerator)
+      summary: List all Accelerators
+      description: >-
+        Return all Accelerators with basic information. Supported query
+        parameters are $skip / $top for paging, $count to get an inline count in
+        the response body, $orderBy on a property.
+      operationId: listAllAssets
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: $skip
+          in: query
+          description: >-
+            Paging parameter - the number of items to skip before starting to
+            collect the result set
+          required: false
+          schema:
+            minimum: 0
+            type: integer
+            format: int32
+            default: 0
+        - name: $top
+          in: query
+          description: Paging parameter - the maximum number of items to be returned.
+          required: false
+          schema:
+            maximum: 500
+            minimum: 1
+            type: integer
+            format: int32
+            default: 100
+          example: 100
+        - name: $count
+          in: query
+          description: Count the number of elements in a collection.
+          required: false
+          schema:
+            type: boolean
+            default: false
+          example: true
+        - name: $orderby
+          in: query
+          description: >-
+            Return the objects in the requested order. Any valid property of the
+            entity can be used as sort criterion* `asc`  - Ascending,  from A to
+            Z* `desc` - Descending, from Z to A
+          required: false
+          schema:
+            maxLength: 250
+            minLength: 0
+            type: string
+            default: name%20asc
+          example: asc
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestCollectionResponse'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+  '/assets/{assetId}':
+    get:
+      tags:
+        - Asset (Accelerator)
+      summary: Get an Accelerator by ID
+      description: Return a single Accelerator identified by ID via the query parameter.
+      operationId: getAssetById
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: assetId
+          in: path
+          description: Accelerator Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 2140a7c7-935f-4718-a8cd-d61e6d4fb692
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+    delete:
+      tags:
+        - Asset (Accelerator)
+      summary: Delete an Accelerator
+      description: >-
+        Delete an Accelerator. Yield: when you call this API, the given
+        Accelerator will be deleted without further notice.
+      operationId: deleteAssignedAsset
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: assetId
+          in: path
+          description: Accelerator Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 2140a7c7-935f-4718-a8cd-d61e6d4fb692
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequestException'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityNotFoundException'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EtagNotMatchingException'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiServiceException'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.delete
+    patch:
+      tags:
+        - Asset (Accelerator)
+      summary: Update an Accelerator
+      description: >-
+        Update name and/or country list of a single Accelerator. The countries
+        are comma separated list of country/region ISO codes. Almost all
+        countries in ISO_3166-1_alpha-2 can be used. 'XX' or empty value can be
+        used if you want to include all countries.
+      operationId: updateAssignedAsset
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+        - name: If-Match
+          in: header
+          description: >-
+            The If-Match HTTP Header conditionally sends the request. An ETag
+            (entity tag If-Match) is an HTTP header that is used to validate
+            that the client has the most recent version of a resource. Latest
+            ETag can be retrieved from the response header by call GET Method of
+            the resources which has been updated or deleted. 
+          schema:
+            type: string
+            example: 1641311556378
+        - name: assetId
+          in: path
+          description: Accelerator Id
+          required: true
+          schema:
+            type: string
+            format: uuid
+          example: 2140a7c7-935f-4718-a8cd-d61e6d4fb692
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetUpdate'
+        required: true
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '404':
+          description: Request resource was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '412':
+          description: ETag not matching
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Asset'
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.write
+  /assets/$count:
+    get:
+      tags:
+        - Asset (Accelerator)
+      summary: Count of Accelerators
+      description: Return count of all Accelerators.
+      operationId: getCountOfAllAssets
+      parameters:
+        - name: Accept-Language
+          in: header
+          description: >-
+            Indicates which languages the client is able to understand, and
+            which locale variant is preferred
+          schema:
+            type: string
+            example: 'en-US,en'
+      responses:
+        '200':
+          description: Successful
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+        '500':
+          description: An Internal Server error occurred
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+      security:
+        - OAuth2:
+            - calm-api.processauthoring.read
+components:
+  schemas:
+    BusinessProcessUpdate:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+    SolutionProcessFlowUpdate:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+    EtagNotMatchingException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  nativeMethod:
+                    type: boolean
+                  className:
+                    type: string
+            message:
+              type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              nativeMethod:
+                type: boolean
+              className:
+                type: string
+        status:
+          type: string
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 EARLY_HINTS
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+        errorLog:
+          type: string
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    nativeMethod:
+                      type: boolean
+                    className:
+                      type: string
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    SolutionProcessFlowDiagramCreate:
+      required:
+        - name
+      type: object
+      properties:
+        svg:
+          type: string
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+    Asset:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        id:
+          type: string
+        countryUrl:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetCountryUrl'
+    SolutionProcessUpdate:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          type: string
+        businessProcess:
+          $ref: '#/components/schemas/ReferenceDTO'
+        countries:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        id:
+          type: string
+        status:
+          type: string
+        externalId:
+          maxLength: 40
+          minLength: 0
+          type: string
+    RestCollectionResponse:
+      type: object
+      properties:
+        count:
+          type: string
+        value:
+          type: object
+    SolutionProcessFlowDiagramBpmn:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        id:
+          type: string
+        stableId:
+          type: string
+        solutionProcessFlow:
+          $ref: '#/components/schemas/ReferenceDTO'
+        state:
+          type: string
+    SolutionProcessFlowDiagramUpdateBpmn:
+      required:
+        - bpmn
+        - name
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        bpmn:
+          type: string
+        state:
+          maxLength: 40
+          minLength: 0
+          type: string
+          enum:
+            - locked
+            - unlocked
+    SolutionProcessFlowDiagramCreateBpmn:
+      required:
+        - bpmn
+        - name
+      type: object
+      properties:
+        bpmn:
+          type: string
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        state:
+          maxLength: 40
+          minLength: 0
+          type: string
+          default: unlocked
+          enum:
+            - locked
+            - unlocked
+    AssetUpdate:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        countryUrl:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetCountryUrl'
+    ReferenceDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        uri:
+          maxLength: 2048
+          minLength: 0
+          type: string
+          format: uri
+    SolutionProcessFlowDiagram:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        id:
+          type: string
+        stableId:
+          type: string
+        solutionProcessFlow:
+          $ref: '#/components/schemas/ReferenceDTO'
+        svg:
+          type: string
+        state:
+          type: string
+    SolutionProcessFlowDiagramUpdate:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        svg:
+          type: string
+    EntityNotFoundException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  nativeMethod:
+                    type: boolean
+                  className:
+                    type: string
+            message:
+              type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              nativeMethod:
+                type: boolean
+              className:
+                type: string
+        status:
+          type: string
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 EARLY_HINTS
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+        errorLog:
+          type: string
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    nativeMethod:
+                      type: boolean
+                    className:
+                      type: string
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    AssetCreate:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        countryUrl:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetCountryUrl'
+    SolutionProcess:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        id:
+          type: string
+        stableId:
+          type: string
+        status:
+          maxLength: 255
+          minLength: 0
+          type: string
+        countries:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        externalId:
+          maxLength: 40
+          minLength: 0
+          type: string
+        businessProcess:
+          $ref: '#/components/schemas/ReferenceDTO'
+    SolutionValueFlowDiagramUpdate:
+      type: object
+      properties:
+        svg:
+          type: string
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+    SolutionProcessFlow:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        id:
+          type: string
+        stableId:
+          type: string
+        solutionProcess:
+          $ref: '#/components/schemas/ReferenceDTO'
+    BusinessProcessCreate:
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+    BadRequestException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  nativeMethod:
+                    type: boolean
+                  className:
+                    type: string
+            message:
+              type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              nativeMethod:
+                type: boolean
+              className:
+                type: string
+        status:
+          type: string
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 EARLY_HINTS
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+        errorLog:
+          type: string
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    nativeMethod:
+                      type: boolean
+                    className:
+                      type: string
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    SolutionProcessCreate:
+      required:
+        - businessProcess
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          type: string
+        businessProcess:
+          $ref: '#/components/schemas/ReferenceDTO'
+        countries:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        externalId:
+          maxLength: 40
+          minLength: 0
+          type: string
+    ApiServiceException:
+      type: object
+      properties:
+        cause:
+          type: object
+          properties:
+            stackTrace:
+              type: array
+              items:
+                type: object
+                properties:
+                  classLoaderName:
+                    type: string
+                  moduleName:
+                    type: string
+                  moduleVersion:
+                    type: string
+                  methodName:
+                    type: string
+                  fileName:
+                    type: string
+                  lineNumber:
+                    type: integer
+                    format: int32
+                  nativeMethod:
+                    type: boolean
+                  className:
+                    type: string
+            message:
+              type: string
+            localizedMessage:
+              type: string
+        stackTrace:
+          type: array
+          items:
+            type: object
+            properties:
+              classLoaderName:
+                type: string
+              moduleName:
+                type: string
+              moduleVersion:
+                type: string
+              methodName:
+                type: string
+              fileName:
+                type: string
+              lineNumber:
+                type: integer
+                format: int32
+              nativeMethod:
+                type: boolean
+              className:
+                type: string
+        status:
+          type: string
+          enum:
+            - 100 CONTINUE
+            - 101 SWITCHING_PROTOCOLS
+            - 102 PROCESSING
+            - 103 EARLY_HINTS
+            - 103 CHECKPOINT
+            - 200 OK
+            - 201 CREATED
+            - 202 ACCEPTED
+            - 203 NON_AUTHORITATIVE_INFORMATION
+            - 204 NO_CONTENT
+            - 205 RESET_CONTENT
+            - 206 PARTIAL_CONTENT
+            - 207 MULTI_STATUS
+            - 208 ALREADY_REPORTED
+            - 226 IM_USED
+            - 300 MULTIPLE_CHOICES
+            - 301 MOVED_PERMANENTLY
+            - 302 FOUND
+            - 302 MOVED_TEMPORARILY
+            - 303 SEE_OTHER
+            - 304 NOT_MODIFIED
+            - 305 USE_PROXY
+            - 307 TEMPORARY_REDIRECT
+            - 308 PERMANENT_REDIRECT
+            - 400 BAD_REQUEST
+            - 401 UNAUTHORIZED
+            - 402 PAYMENT_REQUIRED
+            - 403 FORBIDDEN
+            - 404 NOT_FOUND
+            - 405 METHOD_NOT_ALLOWED
+            - 406 NOT_ACCEPTABLE
+            - 407 PROXY_AUTHENTICATION_REQUIRED
+            - 408 REQUEST_TIMEOUT
+            - 409 CONFLICT
+            - 410 GONE
+            - 411 LENGTH_REQUIRED
+            - 412 PRECONDITION_FAILED
+            - 413 PAYLOAD_TOO_LARGE
+            - 413 REQUEST_ENTITY_TOO_LARGE
+            - 414 URI_TOO_LONG
+            - 414 REQUEST_URI_TOO_LONG
+            - 415 UNSUPPORTED_MEDIA_TYPE
+            - 416 REQUESTED_RANGE_NOT_SATISFIABLE
+            - 417 EXPECTATION_FAILED
+            - 418 I_AM_A_TEAPOT
+            - 419 INSUFFICIENT_SPACE_ON_RESOURCE
+            - 420 METHOD_FAILURE
+            - 421 DESTINATION_LOCKED
+            - 422 UNPROCESSABLE_ENTITY
+            - 423 LOCKED
+            - 424 FAILED_DEPENDENCY
+            - 425 TOO_EARLY
+            - 426 UPGRADE_REQUIRED
+            - 428 PRECONDITION_REQUIRED
+            - 429 TOO_MANY_REQUESTS
+            - 431 REQUEST_HEADER_FIELDS_TOO_LARGE
+            - 451 UNAVAILABLE_FOR_LEGAL_REASONS
+            - 500 INTERNAL_SERVER_ERROR
+            - 501 NOT_IMPLEMENTED
+            - 502 BAD_GATEWAY
+            - 503 SERVICE_UNAVAILABLE
+            - 504 GATEWAY_TIMEOUT
+            - 505 HTTP_VERSION_NOT_SUPPORTED
+            - 506 VARIANT_ALSO_NEGOTIATES
+            - 507 INSUFFICIENT_STORAGE
+            - 508 LOOP_DETECTED
+            - 509 BANDWIDTH_LIMIT_EXCEEDED
+            - 510 NOT_EXTENDED
+            - 511 NETWORK_AUTHENTICATION_REQUIRED
+        errorLog:
+          type: string
+        message:
+          type: string
+        suppressed:
+          type: array
+          items:
+            type: object
+            properties:
+              stackTrace:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    classLoaderName:
+                      type: string
+                    moduleName:
+                      type: string
+                    moduleVersion:
+                      type: string
+                    methodName:
+                      type: string
+                    fileName:
+                      type: string
+                    lineNumber:
+                      type: integer
+                      format: int32
+                    nativeMethod:
+                      type: boolean
+                    className:
+                      type: string
+              message:
+                type: string
+              localizedMessage:
+                type: string
+        localizedMessage:
+          type: string
+    SolutionValueFlowDiagram:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        id:
+          type: string
+        stableId:
+          type: string
+        solutionProcess:
+          $ref: '#/components/schemas/ReferenceDTO'
+        svg:
+          type: string
+    AssetCountryUrl:
+      required:
+        - url
+      type: object
+      properties:
+        country:
+          maxLength: 2
+          minLength: 2
+          type: string
+        url:
+          maxLength: 500
+          minLength: 0
+          type: string
+    BusinessProcess:
+      type: object
+      properties:
+        name:
+          maxLength: 500
+          minLength: 0
+          type: string
+        description:
+          maxLength: 5000
+          minLength: 0
+          type: string
+        id:
+          type: string
+        stableId:
+          type: string
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: >-
+            https://{identityzone}.authentication.{region}.hana.ondemand.com/oauth/token
+          scopes:
+            calm-api.processauthoring.read: Read process authoring entities.
+            calm-api.processauthoring.write: Write process authoring entities.
+            calm-api.processauthoring.delete: Delete process authoring entities.
+x-sap-stateInfo:
+  state: Active
+externalDocs:
+  url: 'https://help.sap.com/docs/cloud-alm/apis/custom-processes-api'
+  description: 'API Guide for SAP Cloud ALM: Process Authoring API'
+x-sap-extensible:
+  supported: 'no'
+x-sap-shortText: 'Allows to get, create, modify, or delete entities in process authoring'
+x-servers:
+  - url: 'https://sandbox.api.sap.com/SAPCALM/calm-processauthoring/v1'
+  - url: 'https://{tenant}.{region}.alm.cloud.sap/api/calm-processauthoring/v1'
+    variables:
+      tenant:
+        description: SAP Cloud ALM Tenant
+        default: ''
+      region:
+        description: SAP Cloud ALM Region
+        default: eu10
+        enum:
+          - eu10
+          - eu20
+          - eu10-004
+          - ca10
+          - us10
+          - ap10
+          - jp10

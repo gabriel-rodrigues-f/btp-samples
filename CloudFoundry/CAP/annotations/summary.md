@@ -1,0 +1,1 @@
+https://learning.sap.com/learning-journeys/getting-started-with-sap-cloud-application-programming-model/validating-user-input_cf5c3632-76f4-4ac2-a277-1e2228067ca6
