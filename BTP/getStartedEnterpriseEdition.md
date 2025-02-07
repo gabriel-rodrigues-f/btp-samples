@@ -1,0 +1,1 @@
+https://community.sap.com/t5/technology-blogs-by-sap/get-started-with-your-sap-btp-enterprise-account-onboarding/ba-p/13483994

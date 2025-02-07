@@ -1,0 +1,4 @@
+<!-- this policy allows us to execute java script code during execution of an API Proxy -->
+<Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" xmlns='http://www.sap.com/apimgmt'>
+	<ResourceURL>jsc://setVariablesLogMetrics.js</ResourceURL>
+</Javascript> 

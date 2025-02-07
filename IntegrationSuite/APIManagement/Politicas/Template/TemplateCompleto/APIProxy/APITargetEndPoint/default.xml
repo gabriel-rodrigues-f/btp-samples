@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TargetEndPoint xmlns="http://www.sap.com/apimgmt">
+    <name>default</name>
+    <provider_id>GWF_QAS</provider_id>
+    <additionalAPIProviders/>
+    <isDefault>true</isDefault>
+    <relativePath>/sap/opu/odata/SAP/ZAPI_SFCONNECT_SRV</relativePath>
+    <properties>
+        <property>
+            <name>success.codes</name>
+            <value>1xx,2xx,3xx,4xx,5xx</value>
+        </property>
+    </properties>
+    <faultRules/>
+    <preFlow>
+        <name>PreFlow</name>
+    </preFlow>
+    <postFlow>
+        <name>PostFlow</name>
+        <response>
+            <isRequest>false</isRequest>
+            <steps>
+                <step>
+                    <policy_name>DataDogLoggingResponse</policy_name>
+                    <condition> </condition>
+                    <sequence>2</sequence>
+                </step>
+                <step>
+                    <policy_name>setVariablesLogResponse</policy_name>
+                    <condition> </condition>
+                    <sequence>1</sequence>
+                </step>
+            </steps>
+        </response>
+    </postFlow>
+    <conditionalFlows/>
+    <loadBalancerConfigurations>
+        <isRetry>false</isRetry>
+        <healthMonitor>
+            <isEnabled>false</isEnabled>
+        </healthMonitor>
+    </loadBalancerConfigurations>
+</TargetEndPoint>

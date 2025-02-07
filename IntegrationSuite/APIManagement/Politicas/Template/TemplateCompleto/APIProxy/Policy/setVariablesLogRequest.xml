@@ -1,0 +1,3 @@
+<Javascript async="false" continueOnError="false" enabled="true" timeLimit="200" xmlns='http://www.sap.com/apimgmt'>
+	<ResourceURL>jsc://setVariablesLogRequest.js</ResourceURL>
+</Javascript> 

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ProxyEndPoint default="true" xmlns="http://www.sap.com/apimgmt">
+    <name>default</name>
+    <base_path>/v1/SAL/Sfconnect</base_path>
+    <properties/>
+    <routeRules>
+        <routeRule>
+            <name>default</name>
+            <targetEndPointName>default</targetEndPointName>
+            <sequence>1</sequence>
+            <faultRules/>
+        </routeRule>
+    </routeRules>
+    <faultRules/>
+    <preFlow>
+        <name>PreFlow</name>
+        <request>
+            <isRequest>true</isRequest>
+            <steps>
+                <step>
+                    <policy_name>applyRateLimit</policy_name>
+                    <condition> </condition>
+                    <sequence>8</sequence>
+                </step>
+                <step>
+                    <policy_name>mitigateXMLCodeInjection</policy_name>
+                    <condition>request.verb = "PUT" or request.verb = "POST"</condition>
+                    <sequence>6</sequence>
+                </step>
+                <step>
+                    <policy_name>DataDogLoggingRequest</policy_name>
+                    <condition> </condition>
+                    <sequence>13</sequence>
+                </step>
+                <step>
+                    <policy_name>getDataDogCredentials</policy_name>
+                    <condition> </condition>
+                    <sequence>12</sequence>
+                </step>
+                <step>
+                    <policy_name>returnDynamicError</policy_name>
+                    <condition>preflow.status != 200</condition>
+                    <sequence>14</sequence>
+                </step>
+                <step>
+                    <policy_name>mitigateJSONCodeInjection</policy_name>
+                    <condition>request.verb = "PUT" or request.verb = "POST"</condition>
+                    <sequence>7</sequence>
+                </step>
+                <step>
+                    <policy_name>BasicAuthentication</policy_name>
+                    <condition> </condition>
+                    <sequence>15</sequence>
+                </step>
+                <step>
+                    <policy_name>prepareVariablesKVM</policy_name>
+                    <condition> </condition>
+                    <sequence>9</sequence>
+                </step>
+                <step>
+                    <policy_name>getCredentials</policy_name>
+                    <condition> </condition>
+                    <sequence>10</sequence>
+                </step>
+                <step>
+                    <policy_name>setVariablesLogRequest</policy_name>
+                    <condition> </condition>
+                    <sequence>11</sequence>
+                </step>
+                <step>
+                    <policy_name>bearerTokenClear</policy_name>
+                    <condition> </condition>
+                    <sequence>2</sequence>
+                </step>
+                <step>
+                    <policy_name>AssignPublicKeyMS</policy_name>
+                    <condition> </condition>
+                    <sequence>3</sequence>
+                </step>
+                <step>
+                    <policy_name>prepareVariablesMSKey</policy_name>
+                    <condition> </condition>
+                    <sequence>4</sequence>
+                </step>
+                <step>
+                    <policy_name>VerifyJWT</policy_name>
+                    <condition> </condition>
+                    <sequence>5</sequence>
+                </step>
+                <step>
+                    <policy_name>VerifyAPIKey</policy_name>
+                    <condition> </condition>
+                    <sequence>1</sequence>
+                </step>
+            </steps>
+        </request>
+    </preFlow>
+    <postFlow>
+        <name>PostFlow</name>
+        <response>
+            <isRequest>false</isRequest>
+            <steps>
+                <step>
+                    <policy_name>setVariablesLogMetrics</policy_name>
+                    <condition> </condition>
+                    <sequence>1</sequence>
+                </step>
+                <step>
+                    <policy_name>DataDogLoggingMetrics</policy_name>
+                    <condition> </condition>
+                    <sequence>2</sequence>
+                </step>
+            </steps>
+        </response>
+    </postFlow>
+    <conditionalFlows/>
+</ProxyEndPoint>

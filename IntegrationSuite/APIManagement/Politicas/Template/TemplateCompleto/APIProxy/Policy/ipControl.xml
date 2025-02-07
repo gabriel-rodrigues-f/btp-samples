@@ -1,0 +1,8 @@
+<!--This policy can be used to selectively allow or block an IP or group of IPs. Enter the Source IP address in SourceAddress property -->
+<AccessControl async='true' continueOnError='true' enabled='true' xmlns='http://www.sap.com/apimgmt'>
+  <IPRules noRuleMatchAction='ALLOW'>
+    <MatchRule action='DENY'>
+      <SourceAddress mask='24'></SourceAddress>
+    </MatchRule>
+  </IPRules>
+</AccessControl>

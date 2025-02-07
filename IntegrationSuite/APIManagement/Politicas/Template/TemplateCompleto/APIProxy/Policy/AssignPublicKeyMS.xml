@@ -1,0 +1,11 @@
+<!-- This policy can be used to create or modify the standard HTTP request and response messages -->
+<AssignMessage async="false" continueOnError="false" enabled="true" xmlns='http://www.sap.com/apimgmt'>
+ 
+    <AssignVariable>
+        <Name>kvmKey.mskeys</Name>
+        <Template>MICROSOFT_KEYS</Template>
+    </AssignVariable>
+	
+	<IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+	<AssignTo createNew="false" type="request"></AssignTo>
+</AssignMessage>

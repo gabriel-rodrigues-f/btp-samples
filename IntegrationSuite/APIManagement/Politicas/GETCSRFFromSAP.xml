@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ServiceCallout async="true" continueOnError="false" enabled="true"
+    xmlns="http://www.sap.com/apimgmt">
+    <Request>
+        <Set>
+            <Headers>
+                <Header name="x-csrf-token">fetch</Header>
+                <Header name="Authorization">{request.header.Authorization}</Header>
+            </Headers>
+            <Verb>GET</Verb>
+        </Set>
+        <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    </Request>
+    <Response>callOutResponse</Response>
+    <Timeout>30000</Timeout>
+    <HTTPTargetConnection>
+        <APIProvider>S4Q</APIProvider>
+        <Path>sap/opu/odata/IWFND/CATALOGSERVICE;v=2/ServiceCollection</Path>
+    </HTTPTargetConnection>
+</ServiceCallout>

@@ -1,0 +1,16 @@
+<RaiseFault async="true" continueOnError="false" enabled="true" xmlns="http://www.sap.com/apimgmt">
+	<!-- Defines the response message returned to the requesting client -->
+	<FaultResponse>
+		<Set>
+			<!-- Sets or overwrites HTTP headers in the respone message -->
+			<Headers>
+			    <Header name="Retry-After">{preflow.message}</Header>
+			    </Headers>
+			<Payload contentType="text/plain">{preflow.message}</Payload> 
+			<StatusCode>{preflow.status}</StatusCode>
+			<!-- sets the reason phrase of the response -->
+			<ReasonPhrase>{preflow.message}</ReasonPhrase>
+		</Set>
+	</FaultResponse>
+	<IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

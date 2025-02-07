@@ -1,0 +1,17 @@
+<!-- This policy can be used to create or modify the standard HTTP request and response messages -->
+<AssignMessage async="false" continueOnError="false" enabled="true"
+    xmlns='http://www.sap.com/apimgmt'>
+    <Set>
+        <Headers>
+            <Header name="Access-Control-Allow-Origin">*</Header>
+            <Header name="Access-Control-Allow-Headers">set-cookie, origin, accept,
+                maxdataserviceversion, x-csrf-token, authorization, dataserviceversion,
+                accept-language, x-http-method, content-type, X-Requested-With, apikey</Header>
+            <Header name="Access-Control-Max-Age">3628800</Header>
+            <Header name="Access-Control-Allow-Methods">GET, PUT, POST, DELETE</Header>
+            <Header name="Access-Control-Expose-Headers">set-cookie, x-csrf-token, x-http-method</Header>
+        </Headers>
+    </Set>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" type="response">response</AssignTo>
+</AssignMessage>

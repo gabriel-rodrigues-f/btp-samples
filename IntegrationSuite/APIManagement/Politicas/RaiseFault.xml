@@ -1,0 +1,21 @@
+<RaiseFault async="true" continueOnError="false" enabled="true" xmlns="http://www.sap.com/apimgmt">
+	<FaultResponse>
+		<Set>
+			<Headers>
+			    <Header name="Retry-After">{ratelimit.applyRateLimit.expiry.time}</Header>
+			    </Headers>
+			<Payload contentType="application/json">
+			    {
+			        "message": "Your Quota Exceeded",
+			        "status": {
+			            "code": 429,
+			            "text": "To Many Requests"
+			        }
+			    }
+            </Payload> 
+			<StatusCode>429</StatusCode>
+			<ReasonPhrase>To Many Requests</ReasonPhrase>
+		</Set>
+	</FaultResponse>
+	<IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

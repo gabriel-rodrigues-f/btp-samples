@@ -1,0 +1,22 @@
+<XMLThreatProtection async="false" continueOnError="true" enabled="true" xmlns="http://www.sap.com/apimgmt">
+   <NameLimits>
+	    <Element>50</Element>
+	    <Attribute>10</Attribute>
+		<NamespacePrefix>10</NamespacePrefix>
+		<ProcessingInstructionTarget>10</ProcessingInstructionTarget>
+	</NameLimits>
+	<Source>request</Source>
+	<StructureLimits>
+		<NodeDepth>10</NodeDepth>
+		<AttributeCountPerElement>5</AttributeCountPerElement>
+       <NamespaceCountPerElement>5</NamespaceCountPerElement>
+       <ChildCount  includeComment="true" includeElement="true" includeProcessingInstruction="true" includeText="true">50</ChildCount>
+	</StructureLimits>
+	<ValueLimits>
+		<Text>50</Text>
+		<Attribute>100</Attribute>
+		<NamespaceURI>100</NamespaceURI>
+		<Comment>10</Comment>
+		<ProcessingInstructionData>10</ProcessingInstructionData>
+   </ValueLimits>
+</XMLThreatProtection>

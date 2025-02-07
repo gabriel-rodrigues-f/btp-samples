@@ -1,0 +1,8 @@
+<OAuthV2 async="false" continueOnError="false" enabled="true" xmlns="http://www.sap.com/apimgmt">
+    <ExternalAuthorization>false</ExternalAuthorization>
+    <Operation>VerifyAccessToken</Operation>
+    <GenerateResponse enabled="true" />
+    <SupportedGrantTypes />
+    <Tokens />
+</OAuthV2>
+ 

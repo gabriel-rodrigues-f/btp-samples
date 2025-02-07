@@ -1,0 +1,14 @@
+<OAuthV2 async="false" continueOnError="false" enabled="true" xmlns="http://www.sap.com/apimgmt">
+   <!-- By default, VerifyAccessToken expects the access token to be sent in an Authorization header. You can change that default using this element<AccessToken> -->
+   <!-- If you want to pass access token in an customer header "access_token": -->
+   <!-- <AccessToken>request.header.access_token</AccessToken> -->
+   <!-- If you want to pass access token in query param "access_token": -->
+   <!-- <AccessToken>request.queryparam.access_token</AccessToken> -->
+   <!-- this flag has to be set when you want to work with third-party access tokens -->
+   <ExternalAuthorization>false</ExternalAuthorization>
+   <!-- valid values are GenerateAccessToken, GenerateAccessTokenImplicitGrant, GenerateAuthorizationCode ,
+    RefreshAccessToken , VerifyAccessToken , InvalidateToken , ValidateToken  -->
+   <Operation>VerifyAccessToken</Operation>
+   <GenerateResponse enabled="true"/><SupportedGrantTypes/>
+   <Tokens/>
+</OAuthV2>

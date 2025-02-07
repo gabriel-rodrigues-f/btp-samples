@@ -1,0 +1,10 @@
+<KeyValueMapOperations mapIdentifier='MicrosoftEntraIDKey' async="true" continueOnError="false" enabled="true" xmlns="http://www.sap.com/apimgmt">
+	<!-- PUT stores the key value pair mentioned inside the element -->
+	<Get assignTo="mskeysInput">
+    <Key>
+      <Parameter ref='kvmKey.mskeys'/>
+    </Key>
+  </Get>
+	<!-- the scope of the key value map. Valid values are environment, organization, apiproxy and policy -->
+	<Scope>environment</Scope>
+</KeyValueMapOperations>

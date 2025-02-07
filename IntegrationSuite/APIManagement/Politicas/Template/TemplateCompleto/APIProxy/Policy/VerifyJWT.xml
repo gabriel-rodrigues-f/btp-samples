@@ -1,0 +1,10 @@
+<VerifyJWT async="false" continueOnError="false" enabled="true" xmlns="http://www.sap.com/apimgmt">
+    <Algorithm>RS256</Algorithm>
+    <Source>request.header.Authorization</Source>
+    <Issuer>https://sts.windows.net/461fd7ef-0eb3-4420-b044-310dc2914d64/</Issuer>
+    <Audience>https://management.azure.com</Audience>
+    <PublicKey>
+        <JWKS ref='mskeysInput'>
+        </JWKS>
+    </PublicKey>
+</VerifyJWT>
